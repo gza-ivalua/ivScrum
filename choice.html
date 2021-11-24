@@ -1,0 +1,43 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link href="http://fonts.cdnfonts.com/css/segoe-ui-4" rel="stylesheet">
+    <meta charset="UTF-8">
+    <title>Scrum dev picker</title>
+    <link rel="stylesheet" href="choice.css">
+</head>
+
+<body>
+    <div id="container">
+        <h1>Dev picker</h1>
+
+        <canvas width="320" height="320" id="picker"></canvas>
+
+        <div id="infoArea">
+            <div id="currentDevInfo">
+                <span id="txtDevCurrent">Pick a user...</span>
+                <span id="txtDevDone"></span>
+            </div>
+        </div>
+
+        <div id="settings">
+            <textarea id="devList"></textarea>
+            <div id="actions">
+                <button id="btnPick" class="btn"><span>Pick</span><img src="you.png" width="38px" /></button>
+                <button id="btnReset" class="btn reset"><span>Reset</span><img src="bomb.png" width="38px" /></button>
+            </div>
+        </div>
+
+        <div id="messages"></div>
+        <div id="countdown" class="glow"></div>
+        <div id="speakingTime">
+            <span>Time Speaking</span>
+            <div id="devsTime"></div>
+        </div>
+    </div>
+
+    <script src="choice.js"></script>
+</body>
+
+</html>

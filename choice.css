@@ -1,0 +1,141 @@
+﻿@font-face {
+    font-family: 'Segoe UI';
+    src: url('http://fonts.cdnfonts.com/css/segoe-ui-4');    
+    font-weight: normal;
+    font-style: normal;
+}
+@import url('https://fonts.googleapis.com/css2?family=Warnes&display=swap');
+body{
+    background-color: #141414;
+    color: white;
+    font-family: 'Segoe UI';
+}
+#speakingTime{
+    display: flex;
+    flex-direction: column;
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 50px;
+    font-size: 1.2em;
+}
+#speakingTime > span {
+    font-size: 1.4em;
+}
+.name{
+    min-width: 50px;
+}
+.row{
+    display: flex;
+    flex-direction: row;
+}
+.row > div{
+    padding: 3px;
+}
+#countdown {
+    color: #fff;    
+    font-size: 6em;
+    font-family: 'Warnes', cursive;
+}
+#container {
+    text-align: center;
+}
+
+#picker {
+    margin: 20px;
+}
+
+#settings {
+    display: flex;
+    justify-content: center;
+}
+
+#actions {
+    margin-left: 10px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+}
+.btn {
+    align-items: center;
+    justify-content: center;
+    display: flex;
+    border: none;
+    background: #0f5132;
+    color: white;
+    border-radius: 11px;
+    padding: 4px 20px;
+    margin: 3px;
+}
+.btn.reset{
+    background: rgb(173, 8, 57);
+}
+.btn span{
+    font-size: 1.2em;;
+    padding: 3px;
+}
+
+#infoArea {
+    display: flex;
+    justify-content: space-around;
+}
+
+#currentDevInfo {
+    padding: 1em;
+    margin: 1em;
+ 
+}
+
+#currentDevInfo>span {
+    padding: 0 1em;
+}
+
+#txtDevDone {
+    color: #888;
+}
+
+#txtDevDone>.dev-trigram {
+    text-decoration: line-through;
+}
+
+#messages {
+    display: flex;
+    flex-direction: column;
+}
+
+.message-warning {
+    box-shadow: 0 0 0 1px #ffecb5 inset, 0 0 0 0 transparent;
+    background-color: #fff3cd;
+    color: #664d03;
+    margin: 0.4em auto;
+    padding: 0.6em;
+}
+
+.message-success {
+    box-shadow: 0 0 0 1px #d1e7dd inset, 0 0 0 0 transparent;
+    background-color: #badbcc;
+    color: #0f5132;
+    margin: 0.4em auto;
+    padding: 0.6em;
+}
+
+.message-error {
+    box-shadow: 0 0 0 1px #f5c2c7 inset, 0 0 0 0 transparent;
+    background-color: #f8d7da;
+    color: #842029;
+    margin: 0.4em auto;
+    padding: 0.6em;
+}
+.glow {
+    animation: glow 1s ease-in-out infinite alternate;
+  }
+  
+  @keyframes glow {
+    from {
+      text-shadow: 0 0 10px #fff, 0 0 10px #fff, 0 0 20px #e60073, 0 0 30px #e60073, 0 0 40px #e60073, 0 0 50px #e60073, 0 0 60px #e60073;
+    }
+    to {
+      text-shadow: 0 0 10px #fff, 0 0 10px #ff4da6, 0 0 20px #ff4da6, 0 0 30px #ff4da6, 0 0 40px #ff4da6, 0 0 50px #ff4da6, 0 0 60px #ff4da6;
+    }
+  }
+  
