@@ -11,6 +11,11 @@
 <body>
     <div id="container">
         <h1>Dev picker</h1>
+        <!--Add buttons to initiate auth sequence and sign out-->
+    <button id="authorize_button" style="display: none;">Authorize</button>
+    <button id="signout_button" style="display: none;">Sign Out</button>
+
+    <pre id="content" style="white-space: pre-wrap;"></pre>
 
         <canvas width="320" height="320" id="picker"></canvas>
 
@@ -38,6 +43,11 @@
     </div>
 
     <script src="choice.js"></script>
+    <script src="driveapi.js"></script>
+    <script async defer src="https://apis.google.com/js/api.js"
+      onload="this.onload=function(){};handleClientLoad()"
+      onreadystatechange="if (this.readyState === 'complete') this.onload()">
+    </script>
 </body>
 
 </html>
