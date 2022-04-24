@@ -250,6 +250,7 @@ const getDevList = () =>
         .map(dev => dev.trim());
 
 const setDevAsCurrent = dev => {
+    buildCards(dev);
     if(pickedDevs.length){
         stopDevTimer(pickedDevs[pickedDevs.length - 1]);
     }

@@ -5,22 +5,68 @@
     font-style: normal;
 }
 @import url('https://fonts.googleapis.com/css2?family=Warnes&display=swap');
+html,
+body,
+#container{
+    height: 100%;
+    width: 100%;
+}
 body{
     background-color: #141414;
     color: white;
     font-family: 'Segoe UI';
 }
+#container{
+    display: flex;
+}
+.column {
+    padding: 10px;
+    flex: 1 1 0;
+}
+.info{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+#cards {
+    display: flex;    
+    flex-direction: row;
+    align-items: flex-start;
+    flex-wrap: wrap;
+}
+.card{
+    overflow: hidden;
+    display: flex;
+    background: #efefef;
+    color: #353535;
+    border-radius: 5px;
+    margin: 10px;    
+    min-height: 190px;
+    width: 180px;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.card .link {
+    padding: 20px 5px;
+    text-decoration: none;
+    color: #105ea2;
+}
+.card .status {
+    color: #929292;
+    background-color: #cdcdcd;
+    height: 30px;
+    font-weight: bolder;
+}
+
 #speakingTime{
     display: flex;
     flex-direction: column;
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 50px;
     font-size: 1.2em;
+    min-height: 330px;
 }
 #speakingTime > span {
     font-size: 1.4em;
+    display: flex;
 }
 .name{
     min-width: 50px;

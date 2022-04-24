@@ -10,44 +10,38 @@
 
 <body>
     <div id="container">
-        <h1>Dev picker</h1>
-        <!--Add buttons to initiate auth sequence and sign out-->
-    <button id="authorize_button" style="display: none;">Authorize</button>
-    <button id="signout_button" style="display: none;">Sign Out</button>
-
-    <pre id="content" style="white-space: pre-wrap;"></pre>
-
-        <canvas width="320" height="320" id="picker"></canvas>
-
-        <div id="infoArea">
-            <div id="currentDevInfo">
-                <span id="txtDevCurrent">Pick a user...</span>
-                <span id="txtDevDone"></span>
+        <div class="column">
+            <canvas width="320" height="320" id="picker"></canvas>
+            <div id="infoArea">
+                <div id="currentDevInfo">
+                    <span id="txtDevCurrent">Pick a user...</span>
+                    <span id="txtDevDone"></span>
+                </div>
+            </div>
+    
+            <div id="settings">
+                <textarea id="devList"></textarea>
+                <div id="actions">
+                    <button id="btnPick" class="btn"><span>Pick</span><img src="you.png" width="38px" /></button>
+                    <button id="btnReset" class="btn reset"><span>Reset</span><img src="bomb.png" width="38px" /></button>
+                </div>
+            </div>
+    
+            <div id="messages"></div>
+            <div id="countdown" class="glow"></div>
+        </div>     
+        <div class="column info">
+            <div id="cards">
+            </div>
+            <div id="speakingTime">
+                <span>Time Speaking ⏱</span>
+                <div id="devsTime"></div>
             </div>
         </div>
-
-        <div id="settings">
-            <textarea id="devList"></textarea>
-            <div id="actions">
-                <button id="btnPick" class="btn"><span>Pick</span><img src="you.png" width="38px" /></button>
-                <button id="btnReset" class="btn reset"><span>Reset</span><img src="bomb.png" width="38px" /></button>
-            </div>
-        </div>
-
-        <div id="messages"></div>
-        <div id="countdown" class="glow"></div>
-        <div id="speakingTime">
-            <span>Time Speaking</span>
-            <div id="devsTime"></div>
-        </div>
-    </div>
+    </div> 
 
     <script src="choice.js"></script>
-    <script src="driveapi.js"></script>
-    <script async defer src="https://apis.google.com/js/api.js"
-      onload="this.onload=function(){};handleClientLoad()"
-      onreadystatechange="if (this.readyState === 'complete') this.onload()">
-    </script>
+    <script src="trello.js"></script>
 </body>
 
 </html>
