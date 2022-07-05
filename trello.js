@@ -1,43 +1,98 @@
-const getUsers = () => {
-    var myHeaders = new Headers();
-    var users =[]
-    myHeaders.set('Accept', 'application/json');
-    fetch('https://api.trello.com/1/boards/6131dc557c18d207f16fe863/members?key=10e69760de5166baedbbf5349ee6a617&token=0e76f01f0aa92582ad6a4a1821f44a28781fdd4f1a373390b32c4daae6fd2d8e', {method: 'GET', headers: myHeaders}).then(res => res.json()).then(data => {
-        console.log(data);
-        data.forEach(e => {
-            users.push(e);
-        })
-    });
-}
 
-const users = {
-    gza: '58480f8e35511bf7f82b961a',
-    jla: '5770de0b7cc5c29c20e1c935',
-    ygr: '59b02122d3bc2d40e1a1ecb8',
-    sci: '615488db3da53285d95402dc',
-    rle: '5c7fc4f442826f14c0a7e497',
-    mdd: '571f321e3d0918a2cde3a2a8',
-    jgt: '61483b5e4b18e97915fa94b9',
+const tabClickHandler = async (e)=> {
+    e.target.closest('.tabs').querySelector('.selected').classList.remove('selected');
+    e.target.closest('.tab').classList.add('selected');
+    initDevList();
+    resetPicker();  
+    await getUsers(true);  
+    getUserImages();      
 }
-let cards = [];
+const initTabs = () => {
+    const tabs = document.querySelector('.tabs');
+    teams.forEach((e, i) => {
+        const tab = document.createElement('li');
+        tab.setAttribute('data-team-id', e.id);
+        tab.classList.add('tab');
+        if (i === 0){
+            tab.classList.add('selected') 
+        }
+        tab.setAttribute('data-trello-id', e.id);
+        tab.textContent = 'Team '  + e.name;
+        tabs.append(tab);        
+    });
+    document.querySelectorAll('.tab').forEach(e => e.addEventListener('click', tabClickHandler));
+}
+let users =[];
+const getTeamId = () => {
+    return teams.find(t => t.name === getTeam()).id;
+}
+async function getUsers(force = false){
+    if (users.length && !force) return users;    
+    const myHeaders = new Headers();
+    myHeaders.set('Accept', 'application/json');    
+    await fetch(`https://api.trello.com/1/boards/${getTeamId()}/members?key=10e69760de5166baedbbf5349ee6a617&token=0e76f01f0aa92582ad6a4a1821f44a28781fdd4f1a373390b32c4daae6fd2d8e`, 
+        {method: 'GET', headers: myHeaders})
+        .then(res => res.json())
+        .then(async data => {
+            promises = [];
+            if (data.error) return;
+            data.forEach(e => {
+                promises.push(fetch(`https://api.trello.com/1/members/${e.id}?key=10e69760de5166baedbbf5349ee6a617&token=0e76f01f0aa92582ad6a4a1821f44a28781fdd4f1a373390b32c4daae6fd2d8e`, 
+                {method: 'GET', headers: myHeaders}));          
+            });
+            await Promise.all(promises)
+                .then(async r => await Promise.all(r.map(res => res.json())
+                ).then(d => {
+                    users = d.reduce((prev, cur) => {
+                        if (!cur.error){
+                            let u = users.find(u => u.id === data.id);                    
+                            if (typeof u !== 'undefined') return;
+                            prev.push(cur);                                  
+                        }
+                        return prev;                     
+                    }, []);                                                  
+                }));
+            return users;
+    });
+    return users;
+}
+const getUserImages = async () => {
+    const u = await getUsers(); 
+    document.querySelectorAll(`[data-user-id]`).forEach(li => {
+        const userId = li.getAttribute('data-user-id');        
+        const user = u.find(u => u.id === userId);
+        if (user) {
+            const img = document.createElement('img');
+            if (!user.avatarUrl) return;
+            img.setAttribute('src', `${user.avatarUrl}/50.png`);        
+            li.querySelector('.name-label').after(img);
+        }                
+    })
+}
+initTabs();
+getUserImages();
+let trelloCards = [];
 let lists = [];
 
+
 const getCards = async (userName) => {
-    const userId = users[userName];
-    if (cards.length === 0){
+    if (trelloCards.length === 0){
         var myHeaders = new Headers();
         myHeaders.set('Accept', 'application/json');
-        await fetch('https://api.trello.com/1/boards/6131dc557c18d207f16fe863/cards?key=10e69760de5166baedbbf5349ee6a617&token=0e76f01f0aa92582ad6a4a1821f44a28781fdd4f1a373390b32c4daae6fd2d8e', {method: 'GET', headers: myHeaders}).then(res => res.json()).then(data => {        
-            cards = data;
+        await fetch(`https://api.trello.com/1/boards/${getTeamId()}/cards?key=10e69760de5166baedbbf5349ee6a617&token=0e76f01f0aa92582ad6a4a1821f44a28781fdd4f1a373390b32c4daae6fd2d8e`, 
+        {method: 'GET', headers: myHeaders}).then(res => res.json()).then(data => {        
+            trelloCards = data;
         });
     }
-    return cards.filter(e => e.idMembers.indexOf(userId) > -1);    
+    if (!userName) return trelloCards;
+    const userId = teams.find(t => t.name === getTeam()).devs.find(d => d.trigram === userName).id;
+    return trelloCards.filter(e => e.idMembers.indexOf(userId) > -1);    
 }
 const getLists = async () => {
     if (lists.length === 0){
         var myHeaders = new Headers();
         myHeaders.set('Accept', 'application/json');
-        await fetch('https://api.trello.com/1/boards/6131dc557c18d207f16fe863/lists?key=10e69760de5166baedbbf5349ee6a617&token=0e76f01f0aa92582ad6a4a1821f44a28781fdd4f1a373390b32c4daae6fd2d8e', 
+        await fetch(`https://api.trello.com/1/boards/${getTeamId()}/lists?key=10e69760de5166baedbbf5349ee6a617&token=0e76f01f0aa92582ad6a4a1821f44a28781fdd4f1a373390b32c4daae6fd2d8e`, 
                 {method: 'GET', headers: myHeaders})
                     .then(res => res.json())
                     .then(data => {        
@@ -46,11 +101,15 @@ const getLists = async () => {
     }
     return lists;
 }
-const buildCards = async (userName) => {
-    const cards = await getCards(userName);
+const buildCards = async (userName, inProgress) => {
+    let cards = await getCards(userName);
+    if (inProgress){
+        const lists = await getLists();
+        const inProgress = lists.find(l => l.name.toLowerCase().indexOf('in progress') > -1).id;
+        cards = cards.filter(c => c.idList === inProgress);
+    }
     const container = document.getElementById('cards');
-    container.innerHTML = '';
-    console.log(cards);
+    container.innerHTML = '';    
     const lists = await getLists();
     cards.forEach(c => {
         const list = lists.filter(e => e.id === c.idList)[0];
@@ -67,5 +126,6 @@ const buildCards = async (userName) => {
         status.textContent = list.name;   
         card.appendChild(status);
         container.appendChild(card);        
-    })
+    });
 }
+buildCards(null, true);

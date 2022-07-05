@@ -1,6 +1,111 @@
-﻿//#region Constants
+﻿const teams = [
+    {
+        name: 'cc', id: '626f8c46f7f94f30b0bc78d4', devs: [
+            {"trigram" : "gza", "name": "Guillaume", id: "58480f8e35511bf7f82b961a"},
+            {"trigram" : "jgt", "name": "Jose", id: "61483b5e4b18e97915fa94b9"},
+            {"trigram" : "jla", "name": "Julien L", id: "5770de0b7cc5c29c20e1c935"},                         
+            {"trigram" : "mbo", "name": "Marcin", id: "59b2635100bc9d3ead969dc9"},
+            {"trigram" : "mdd", "name": "Mickael", id: "571f321e3d0918a2cde3a2a8"},
+            {"trigram" : "rle", "name": "Rémi", id: "5c7fc4f442826f14c0a7e497"},            
+            {"trigram" : "sci", "name": "Samuel", id: "615488db3da53285d95402dc"},                                
+            {"trigram" : "ygr", "name": "Yann", id: "59b02122d3bc2d40e1a1ecb8"},
+            {"trigram" : "jkl", "name": "Julien K", id: "61c205b702268157e004b923"},
+            {"trigram" : "anp", "name": "Anaïs", id: "5dd3f667cfe7b67ee3695081"},
+            {"trigram" : "sao", "name": "Safi", id: "62a73ac1eeaf9f117353911a"}
+        ]
+    },
+    {
+        name: 'integration', id: '6180fec4c1f0071005db2e8c', devs: [
+            {"trigram" : "pst", "name": "Philippe", id: "57357594b69d9fd7e3cf8037"},
+            {"trigram" : "afo", "name": "Antonin", id: "617a5c4c59490938673593f0" },
+            {"trigram" : "cda", "name": "Christophe", id: "5721daa1b7364971e546197a"},                         
+            {"trigram" : "mil", "name": "Michael", id: "61828a4b9c03d460e173385e" },
+            {"trigram" : "nmi", "name": "Nicolas", id: "52933ef71af028a5410087b3" },
+            {"trigram" : "vml", "name": "Vincent", id :"6182a222015f9d30b7ae7620"}
+        ]
+    }
+];
+const getTeam = () => {
+    const tab = document.querySelector('.selected.tab');
+    if (!tab){
+        return retrieveTeam();
+    }
+    const id = tab.getAttribute('data-trello-id');
+    const team = teams.filter(e => e.id === id);
+    return team[0].name;
+}
+const retrieveDevList = () => {    
+    return getStorageItem(`devList_${getTeam()}`);
+}
+const retrieveTeam = () => {
+    const t = getStorageItem('team');
+    if (!t){
+        return teams[0].name;
+    }
+}
+const getStorageItem = (key) => {
+    return localStorage.getItem(key);
+}
+function loadJSON(callback) {   
+    var data = teams;
+    callback(data);
+ }
+ /**
+ * Get the dev list as an array from
+ * the input set in the corresponding textarea.
+ * @returns the dev list.
+ */
+const getDevList = () => {
+    const items = document.querySelectorAll('.dev.column li');
+    const res = [...items].reduce((prev, cur, i, arr) => {
+        const input = cur.querySelector('input');
+        if (input.checked){
+            prev.push(input.value);
+        }
+        return prev;
+    }, []);
+    return res;
+}
+ const saveDevList = () => {
+    localStorage.setItem(`devList_${getTeam()}`, getDevList());
+}
+ function initDevList() {
+    const ul = document.querySelector('.dev.column');
+    ul.innerHTML = '';
+    const selectedDev = retrieveDevList();
+    loadJSON((data) => { 
+        const devs = data.find(e => e.name === getTeam()).devs;
+        devs.forEach(e => { 
+            const li = document.createElement('li');
+            li.setAttribute('data-user-id', e.id);                        
+            const div = document.createElement('div');
+            div.classList.add('label');
+            div.setAttribute('id', e.trigram);
+            const label = document.createElement('label');
+            label.classList.add('name-label');
+            label.setAttribute('for', e.trigram);
+            label.textContent = e.name;
+            const chk = document.createElement('input');
+            chk.setAttribute('value', e.trigram);
+            chk.setAttribute('id', e.trigram);
+            chk.setAttribute('type', 'checkbox');
+            if (selectedDev)
+                chk.checked = selectedDev.indexOf(e.trigram) > -1;
+            else{
+                chk.checked = true;
+            }
+            li.append(div);
+            div.append(label);
+            li.append(chk);
+            ul.append(li);
+        })
+    });
+    saveDevList();
+   }
+   initDevList();
+//#region Constants
 const SQRT_PI = Math.sqrt(Math.PI);
-const COLORS = ['#f94144', '#f3722c', '#f8961e', '#f9844a', '#f9c74f', '#90be6d', '#43aa8b', '#4d908e', '#577590', '#277da1'];
+const COLORS = ['#6867AC', '#A267AC', '#CE7BB0', '#FFBCD1', '#705089', '#A267AC', '#CE7BB0', '#FFBCD1'];
 //#endregion
 
 //#region Global variables
@@ -148,16 +253,18 @@ const drawCircularArea = (i, dev, n, color, deltaStartAngle) => {
     ctx.closePath();
 
     ctx.fillStyle = color;
+    ctx.globalAlpha = .75;
     ctx.fill();
 
     ctx.save();
     ctx.translate(pickerRadius, pickerRadius);
     ctx.rotate((startAngle + endAngle) / 2 + Math.PI / 2);
-    ctx.font = "16px serif";
+    ctx.font = "bold 19px Segoe UI";
+    ctx.fontWeight = 600;
     ctx.textAlign = 'center';
     ctx.fillStyle = 'rgba(255, 255, 255, 0.8)';
-    ctx.fillRect(-25, - 3 * pickerRadius / 4 - 16, 50, 22);
-    ctx.fillStyle = '#111';
+    // ctx.fillRect(-25, - 3 * pickerRadius / 4 - 16, 50, 22);
+    // ctx.fillStyle = '#111';
     ctx.fillText(dev, 0, - 3 * pickerRadius / 4);
     ctx.restore();
 }
@@ -188,7 +295,10 @@ const drawPickerRule = () => {
  */
 const createDiagram = (devList, deltaStartAngle = 0) => {
     const nbDevs = devList.length;
-    devList.forEach((dev, i) => drawCircularArea(i, getDevName(dev), nbDevs, COLORS[(i * 7) % COLORS.length], deltaStartAngle));
+    devList.forEach((dev, i) => {
+        const index = i;//(i * 7) % COLORS.length;        
+        drawCircularArea(i, getDevName(dev), nbDevs, COLORS[index], deltaStartAngle);
+    });
 }
 
 /**
@@ -239,16 +349,6 @@ const rotateWheel = (timestamp, initialSpeed, deceleration) => {
 
 
 //#region Dev utilities
-/**
- * Get the dev list as an array from
- * the input set in the corresponding textarea.
- * @returns the dev list.
- */
-const getDevList = () =>
-    $('devList').value
-        .split(',')
-        .map(dev => dev.trim());
-
 const setDevAsCurrent = dev => {
     buildCards(dev);
     if(pickedDevs.length){
@@ -291,27 +391,18 @@ const startCountDown =() => {
     var countDownDate = addMinutes(new Date(), 15).getTime();
     // Update the count down every 1 second
     var countdown = setInterval(function() {
-    // Get today's date and time
-    var now = new Date().getTime();    
+        // Get today's date and time
+        var now = new Date().getTime();    
         // Find the distance between now and the count down date
         var distance = countDownDate - now;    
-        
-        document.getElementById("countdown").innerHTML = dateTostring(distance);    
-        // If the count down is finished, write some text
-        // if (distance < 0)
+        var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+        setTime(minutes, seconds); 
+        stopTimer = stopTimer | (minutes === 0 && seconds === 0);
         if (stopTimer) {
-            clearInterval(countdown);
-            //document.getElementById("countdown").innerHTML = "EXPIRED";
+            clearInterval(countdown);            
         }
-
     }, 1000);
-}
-const dateTostring = (distance) => {
-    // Time calculations for days, hours, minutes and seconds        
-    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-    // Display the result in the element with id="demo"
-    return  minutes + "m" + seconds + "s ";
 }
 const addMinutes = (date, minutes) => {
     return new Date(date.getTime() + minutes*60000);
@@ -323,17 +414,18 @@ const startDevTimer = (dev) => {
 const stopDevTimer = (dev) => {
     var endDate = new Date();
     var distance = endDate.getTime() - devSpeakingTime[dev].getTime();
-    var container = document.getElementById('devsTime');
-    var subContainer = document.createElement('div');
-    subContainer.classList.add("row")
-    container.appendChild(subContainer);
-    var nameDiv = document.createElement('div'); 
-    nameDiv.classList.add("name");   
-    nameDiv.appendChild(document.createTextNode(getDevName(dev)));
-    var timeDiv = document.createElement('div');   
+    var container = document.querySelector(`.label[id="${dev}"]`);   
+    var timeDiv = document.createElement('span');  
+    timeDiv.classList.add('time-speaking'); 
     timeDiv.appendChild(document.createTextNode(dateTostring(distance)));
-    subContainer.appendChild(nameDiv)
-    subContainer.appendChild(timeDiv)
+    container.after(timeDiv)
+}
+const dateTostring = (distance) => {
+    // Time calculations for days, hours, minutes and seconds        
+    var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+    var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+    // Display the result in the element with id="demo"
+    return  minutes + "m" + seconds + "s ";
 }
 /**
  * Run the wheel and pick a developer.
@@ -384,28 +476,32 @@ const getDevName = (dev) => {
         return 'Chaton';
     return dev.toUpperCase();
 }
-
-const retrieveDevList = () => {
-    const list = localStorage.getItem('devList');
-    if (typeof list !== 'undefined' && list !== '')
-        $('devList').value = list;
-}
-
-const saveDevList = () => {
-    localStorage.setItem('devList', $('devList').value);
+const saveTeam = () => {
+    localStorage.setItem('team', getTeam());
 }
 //#endregion
 
 
 const resetPicker = () => {
-    stopTimer = true;
-    document.getElementById('devsTime').innerHTML = '';
+      
+    stopTimer = true;    
     $('txtDevDone').innerHTML = '';
     devList = getDevList();
     remainingDevs = [...devList];
     pickedDevs = [];
     document.title = `Scrum dev picker`;
     redrawAll(remainingDevs);
+    const cards = document.querySelector('#cards');
+    if(cards){
+        cards.innerHTML = '';
+    } 
+    setTime('15', '0');
+    if (typeof trelloCards !== 'undefined') {
+        trelloCards = [];        
+    } 
+    if (typeof lists !== 'undefined') {        
+        lists = [];
+    } 
 }
 
 const captureKey = evt => {
@@ -419,8 +515,11 @@ const captureKey = evt => {
 const initEvents = () => {
     $('btnPick').addEventListener('click', pickDev);
     $('btnReset').addEventListener('click', resetPicker);
-    $('devList').addEventListener('blur', saveDevList);
-
+    document.querySelectorAll('input').forEach(item => {
+        item.addEventListener('change', event => {
+            saveDevList();
+        })
+      });
     document.addEventListener('keypress', captureKey);
 }
 
@@ -437,5 +536,6 @@ const init = () => {
 
 
 
-
-init();
+jQuery(function () {
+    init();  
+  });

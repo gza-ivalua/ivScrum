@@ -2,46 +2,89 @@
 <html lang="en">
 
 <head>
-    <link href="http://fonts.cdnfonts.com/css/segoe-ui-4" rel="stylesheet">
+    <script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
     <meta charset="UTF-8">
     <title>Scrum dev picker</title>
     <link rel="stylesheet" href="choice.css">
+    <link rel="stylesheet" href="clock.css">
 </head>
 
 <body>
     <div id="container">
         <div class="column">
-            <canvas width="320" height="320" id="picker"></canvas>
+            <div class="row space-evenly">
+                <div class="flex column team">
+                    <ul class="tabs"></ul>
+                    <ul class="dev column">
+                    </ul>
+                </div>
+                
+                <canvas width="360" height="360" id="picker"></canvas>
+               
+            </div>
+            
             <div id="infoArea">
                 <div id="currentDevInfo">
-                    <span id="txtDevCurrent">Pick a user...</span>
+                    <span id="txtDevCurrent"></span>
                     <span id="txtDevDone"></span>
                 </div>
             </div>
     
-            <div id="settings">
-                <textarea id="devList"></textarea>
-                <div id="actions">
-                    <button id="btnPick" class="btn"><span>Pick</span><img src="you.png" width="38px" /></button>
-                    <button id="btnReset" class="btn reset"><span>Reset</span><img src="bomb.png" width="38px" /></button>
+            <div id="settings">                                
+                <div id="actions">                    
+                    <button id="btnPick" class="btn"><span>Pick</span></button>
+                    <button id="btnReset" class="btn reset"><span>Reset</span></button>
                 </div>
             </div>
     
-            <div id="messages"></div>
-            <div id="countdown" class="glow"></div>
-        </div>     
+            <div id="messages"></div>            
+            <div class="clock">
+                <div class="flipper">
+                <div class="gear"></div>
+                <div class="gear"></div>
+                <div class="top">
+                    <div class="text">15</div>
+                </div>
+                <div class="bottom">
+                    <div class="text">15</div>
+                </div>
+                </div>                
+                <div class="flipper">
+                <div class="gear"></div>
+                <div class="gear"></div>
+                <div class="top">
+                    <div class="text">00</div>
+                </div>
+                <div class="bottom">
+                    <div class="text">00</div>
+                </div>
+                </div>
+            </div>
+        </div>            
         <div class="column info">
             <div id="cards">
-            </div>
-            <div id="speakingTime">
-                <span>Time Speaking ⏱</span>
-                <div id="devsTime"></div>
-            </div>
+            </div>            
         </div>
-    </div> 
-
-    <script src="choice.js"></script>
+        <div class="music flex column">
+            <div class="flex row player-actions">
+                <img width="90" src="delorean.png" class="delorean"/>
+                <img class="pause button" width="40"  height="40" src="pause.png" />
+                <img class="play button" width="40" height="40" src="play.png" />
+                <img class="next button" width="40" height="40" src="next.png" />
+            </div>
+            <marquee class="dotted hidden">music sounds better with you</marquee>
+            <audio controls autoplay id="player">                           
+            </audio>
+        </div>
+    </div>
+    
+    <script src="clock.js"></script>
+    <script src="choice.js"></script>    
     <script src="trello.js"></script>
+    <script src="music.js"></script>
 </body>
 
 </html>
