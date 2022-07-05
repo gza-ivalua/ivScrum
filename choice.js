@@ -10,12 +10,12 @@
             {"trigram" : "sci", "name": "Samuel", id: "615488db3da53285d95402dc"},                                
             {"trigram" : "ygr", "name": "Yann", id: "59b02122d3bc2d40e1a1ecb8"},
             {"trigram" : "jkl", "name": "Julien K", id: "61c205b702268157e004b923"},
-            {"trigram" : "anp", "name": "Anaïs", id: "5dd3f667cfe7b67ee3695081"},
             {"trigram" : "sao", "name": "Safi", id: "62a73ac1eeaf9f117353911a"}
         ]
     },
     {
         name: 'integration', id: '6180fec4c1f0071005db2e8c', devs: [
+            {"trigram" : "anp", "name": "Anaïs", id: "5dd3f667cfe7b67ee3695081"},
             {"trigram" : "pst", "name": "Philippe", id: "57357594b69d9fd7e3cf8037"},
             {"trigram" : "afo", "name": "Antonin", id: "617a5c4c59490938673593f0" },
             {"trigram" : "cda", "name": "Christophe", id: "5721daa1b7364971e546197a"},                         
@@ -105,7 +105,7 @@ const getDevList = () => {
    initDevList();
 //#region Constants
 const SQRT_PI = Math.sqrt(Math.PI);
-const COLORS = ['#6867AC', '#A267AC', '#CE7BB0', '#FFBCD1', '#705089', '#A267AC', '#CE7BB0', '#FFBCD1'];
+const COLORS = ['#6867AC', '#A267AC', '#CE7BB0', '#FFBCD1', '#705089', '#A267AC', '#CE7BB0', '#ef628c', '#a83f5d','#af1642'];
 //#endregion
 
 //#region Global variables
