@@ -52,7 +52,7 @@ function loadJSON(callback) {
     callback(data);
  }
  /**
- * Get the dev list as an array from
+ * Get the dev list as an array from coucou
  * the input set in the corresponding textarea.
  * @returns the dev list.
  */
