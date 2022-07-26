@@ -21,7 +21,8 @@
             {"trigram" : "cda", "name": "Christophe", id: "5721daa1b7364971e546197a"},                         
             {"trigram" : "mil", "name": "Michael", id: "61828a4b9c03d460e173385e" },
             {"trigram" : "nmi", "name": "Nicolas", id: "52933ef71af028a5410087b3" },
-            {"trigram" : "vml", "name": "Vincent", id :"6182a222015f9d30b7ae7620"}
+            {"trigram" : "vml", "name": "Vincent", id :"6182a222015f9d30b7ae7620"},
+            {"trigram" : "skf", "name" : "Salim", id: "62dfa8865f56db0ad39af728"}
         ]
     }
 ];
