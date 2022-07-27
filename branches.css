@@ -11,7 +11,7 @@
 }
 .branch{
     padding: 5px 15px;
-    border: 1px solid rgba(255, 255, 255, .7);
+    border: 1px solid rgba(255, 255, 255, .6);
     border-radius: 5px;
     margin: 8px;
     justify-content: center;
@@ -21,12 +21,20 @@
 .status{    
     cursor: pointer;
 }
+.branch a{
+    text-decoration: none;
+}
+.branch:hover a{
+    text-decoration: underline;
+}
 .branch[data-status=locked],
-.branch[data-status=locked] i{
+.branch[data-status=locked] i,
+.branch[data-status=locked] a{
     color: #cf394f !important;
 }
 .branch[data-status=opened],
-.branch[data-status=opened] i{
+.branch[data-status=opened] i,
+.branch[data-status=opened] a{
     color: #1bb25c !important;
 }
 
@@ -36,4 +44,7 @@
 .status-button {
     background: none;
     border: none;
+}
+.btn {
+    font-size: 1em !important;
 }
