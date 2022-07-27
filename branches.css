@@ -11,12 +11,12 @@
 }
 .branch{
     padding: 5px 15px;
-    border: 1px solid rgba(255, 255, 255, .6);
+    border: 1px solid;
     border-radius: 5px;
     margin: 8px;
     justify-content: center;
     align-items: center;
-    background: rgba(0, 0, 0, .5);
+    background: rgba(0, 0, 0, .2);
 }
 .status{    
     cursor: pointer;
