@@ -1,0 +1,39 @@
+.branches-list-container{
+    margin: 30px;
+}
+.title{
+    font-size: 1.5em;
+}
+.branches-list{
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+}
+.branch{
+    padding: 5px 15px;
+    border: 1px solid rgba(255, 255, 255, .7);
+    border-radius: 5px;
+    margin: 8px;
+    justify-content: center;
+    align-items: center;
+    background: rgba(0, 0, 0, .5);
+}
+.status{    
+    cursor: pointer;
+}
+.branch[data-status=locked],
+.branch[data-status=locked] i{
+    color: #cf394f !important;
+}
+.branch[data-status=opened],
+.branch[data-status=opened] i{
+    color: #1bb25c !important;
+}
+
+.version {
+    margin-right: 8px;
+}
+.status-button {
+    background: none;
+    border: none;
+}
