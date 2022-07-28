@@ -18,7 +18,7 @@
     align-items: center;
     background: rgba(0, 0, 0, .2);
 }
-.status{    
+.status-button{    
     cursor: pointer;
 }
 .branch a{
