@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+
+<head>
+    <script
+  src="https://code.jquery.com/jquery-3.6.0.js"
+  integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+  crossorigin="anonymous"></script>
+    <meta charset="UTF-8">
+    <title>Scrum dev picker</title>
+    <script type="text/javascript">
+        // Notice how this gets configured before we load Font Awesome
+        window.FontAwesomeConfig = { autoReplaceSvg: false }
+      </script>
+    <link rel="stylesheet" href="choice.css">
+    <link rel="stylesheet" href="branches.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/js/all.min.js" integrity="sha512-8pHNiqTlsrRjVD4A/3va++W1sMbUHwWxxRPWNyVlql3T+Hgfd81Qc6FC5WMXDC+tSauxxzp1tgiAvSKFu1qIlA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    
+</head>
+
+<body>    
+    <div class="flex column">
+        <div class="branches-list-container">
+            <span class="title">Cauchy Branches Status</span>            
+            <ul class="branches-list flex row" id="branches"></ul>
+            <div class="flex row">
+                <button id="btnPick" class="btn"><span>Cauchy Unchained</span></button>
+                <button id="btnPick" class="btn"><span>Lock Them All</span></button>
+            </div>            
+        </div>        
+    </div>
+    <script src="branch.js"></script>
+</body>
+
+</html>
