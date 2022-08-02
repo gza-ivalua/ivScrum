@@ -1,8 +1,9 @@
-const apiUrl = 'https://iv-scrum-api.herokuapp.com'
+const apiUrl = 'https://iv-scrum-api.herokuapp.com';
+const statusEnum = {locked: 'locked', opened: 'opened'}
 const changeBranchStatus = (id, status) => {
     const branch = document.getElementById(id);
     const branchCode = branch.getAttribute('data-branch-code');
-    const action = status === 'locked' ? 'lock=1' : 'unlock=1';    
+    const action = status === statusEnum.locked ? 'lock=1' : 'unlock=1';    
     fetch(`https://project.ivalua.com/page/chg/branch_manage?branch_code=${branchCode}&${action}`, {
         "headers": {              
           "content-type": "application/x-www-form-urlencoded",              
@@ -31,9 +32,25 @@ const changeBranchStatusClick = (e) => {
     const target = e.target;
     const branch = target.closest('.branch');
     const status = branch.getAttribute('data-status'); 
-    const newStatus = status === 'locked' ? 'opened' : 'locked';      
+    const newStatus = status === statusEnum.locked ? statusEnum.opened : statusEnum.locked;      
     const id = branch.id;
     changeBranchStatus(id, newStatus);
+}
+const unchainCauchyBranches = (event) => {
+    document.querySelectorAll('.branch').forEach(b => {
+        const status = b.getAttribute('data-status');
+        if (status === statusEnum.locked){
+            changeBranchStatus(b.id, statusEnum.opened);
+        }
+    })
+}
+const lockCauchyBranches = (event) => {
+    document.querySelectorAll('.branch').forEach(b => {
+        const status = b.getAttribute('data-status');
+        if (status === statusEnum.opened){
+            changeBranchStatus(b.id, statusEnum.locked);
+        }
+    })
 }
 const getBranches = () => {
     const myHeaders = new Headers();
@@ -73,7 +90,7 @@ const getBranches = () => {
                 button.classList.add('status-button');
                 const icon = document.createElement('i');
                 icon.classList.add('fa-solid', 'status')
-                if (b.status === 'locked'){
+                if (b.status === statusEnum.locked){
                     icon.classList.add('fa-lock');    
                 }
                 else{
@@ -83,7 +100,9 @@ const getBranches = () => {
                 button.append(icon);
                 branch.append(button);
                 branchesElement.append(branch)                
-            })
+            });           
         })
 }
 getBranches();
+document.querySelector('.unchain').addEventListener('click', unchainCauchyBranches);
+document.querySelector('.lockdemall').addEventListener('click', lockCauchyBranches)
