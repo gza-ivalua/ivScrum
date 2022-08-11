@@ -1,4 +1,4 @@
-
+const trelloApiQuerystring = 'key=10e69760de5166baedbbf5349ee6a617&token=0e76f01f0aa92582ad6a4a1821f44a28781fdd4f1a373390b32c4daae6fd2d8e';
 const tabClickHandler = async (e)=> {
     e.target.closest('.tabs').querySelector('.selected').classList.remove('selected');
     e.target.closest('.tab').classList.add('selected');
@@ -24,25 +24,25 @@ const initTabs = () => {
 }
 let users =[];
 const getTeamId = () => {
-    return teams.find(t => t.name === getTeam()).id;
+    return teams.find(t => t.name === getTeam()).trelloId;
 }
 async function getUsers(force = false){
     if (users.length && !force) return users;    
     const myHeaders = new Headers();
     myHeaders.set('Accept', 'application/json');    
-    await fetch(`https://api.trello.com/1/boards/${getTeamId()}/members?key=10e69760de5166baedbbf5349ee6a617&token=0e76f01f0aa92582ad6a4a1821f44a28781fdd4f1a373390b32c4daae6fd2d8e`, 
+    await fetch(`https://api.trello.com/1/boards/${getTeamId()}/members?${trelloApiQuerystring}`, 
         {method: 'GET', headers: myHeaders})
         .then(res => res.json())
         .then(async data => {
             promises = [];
             if (data.error) return;
             data.forEach(e => {
-                promises.push(fetch(`https://api.trello.com/1/members/${e.id}?key=10e69760de5166baedbbf5349ee6a617&token=0e76f01f0aa92582ad6a4a1821f44a28781fdd4f1a373390b32c4daae6fd2d8e`, 
+                promises.push(fetch(`https://api.trello.com/1/members/${e.id}?${trelloApiQuerystring}`, 
                 {method: 'GET', headers: myHeaders}));          
             });
             await Promise.all(promises)
-                .then(async r => await Promise.all(r.map(res => res.json())
-                ).then(d => {
+                .then(async r => await Promise.all(r.map(res => res.json()))
+                .then(d => {
                     users = d.reduce((prev, cur) => {
                         if (!cur.error){
                             let u = users.find(u => u.id === data.id);                    
@@ -51,7 +51,8 @@ async function getUsers(force = false){
                         }
                         return prev;                     
                     }, []);                                                  
-                }));
+                }))
+                .catch(() => data);
             return users;
     });
     return users;
@@ -69,23 +70,23 @@ const getUserImages = async () => {
         }                
     })
 }
-initTabs();
-getUserImages();
+
 let trelloCards = [];
 let lists = [];
 
 
-const getCards = async (userName) => {
+const getCards = async (userName) => {    
     if (trelloCards.length === 0){
         var myHeaders = new Headers();
         myHeaders.set('Accept', 'application/json');
         await fetch(`https://api.trello.com/1/boards/${getTeamId()}/cards?key=10e69760de5166baedbbf5349ee6a617&token=0e76f01f0aa92582ad6a4a1821f44a28781fdd4f1a373390b32c4daae6fd2d8e`, 
-        {method: 'GET', headers: myHeaders}).then(res => res.json()).then(data => {        
-            trelloCards = data;
-        });
+            {method: 'GET', headers: myHeaders})
+            .then(res => res.json()).then(data => {        
+                trelloCards = data;
+            });
     }
     if (!userName) return trelloCards;
-    const userId = teams.find(t => t.name === getTeam()).devs.find(d => d.trigram === userName).id;
+    const userId = teams.find(t => t.name === getTeam()).devs.find(d => d.trigram === userName).trello;
     return trelloCards.filter(e => e.idMembers.indexOf(userId) > -1);    
 }
 const getLists = async () => {
@@ -128,4 +129,3 @@ const buildCards = async (userName, inProgress) => {
         container.appendChild(card);        
     });
 }
-buildCards(null, true);

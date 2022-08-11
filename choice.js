@@ -1,31 +1,63 @@
-﻿const teams = [
-    {
-        name: 'cc', id: '626f8c46f7f94f30b0bc78d4', devs: [
-            {"trigram" : "gza", "name": "Guillaume", id: "58480f8e35511bf7f82b961a"},
-            {"trigram" : "jgt", "name": "Jose", id: "61483b5e4b18e97915fa94b9"},
-            {"trigram" : "jla", "name": "Julien L", id: "5770de0b7cc5c29c20e1c935"},                         
-            {"trigram" : "mbo", "name": "Marcin", id: "59b2635100bc9d3ead969dc9"},
-            {"trigram" : "mdd", "name": "Mickael", id: "571f321e3d0918a2cde3a2a8"},
-            {"trigram" : "rle", "name": "Rémi", id: "5c7fc4f442826f14c0a7e497"},            
-            {"trigram" : "sci", "name": "Samuel", id: "615488db3da53285d95402dc"},                                
-            {"trigram" : "ygr", "name": "Yann", id: "59b02122d3bc2d40e1a1ecb8"},
-            {"trigram" : "jkl", "name": "Julien K", id: "61c205b702268157e004b923"},
-            {"trigram" : "sao", "name": "Safi", id: "62a73ac1eeaf9f117353911a"}
-        ]
-    },
-    {
-        name: 'integration', id: '6180fec4c1f0071005db2e8c', devs: [
-            {"trigram" : "anp", "name": "Anaïs", id: "5dd3f667cfe7b67ee3695081"},
-            {"trigram" : "pst", "name": "Philippe", id: "57357594b69d9fd7e3cf8037"},
-            {"trigram" : "afo", "name": "Antonin", id: "617a5c4c59490938673593f0" },
-            {"trigram" : "cda", "name": "Christophe", id: "5721daa1b7364971e546197a"},                         
-            {"trigram" : "mil", "name": "Michael", id: "61828a4b9c03d460e173385e" },
-            {"trigram" : "nmi", "name": "Nicolas", id: "52933ef71af028a5410087b3" },
-            {"trigram" : "vml", "name": "Vincent", id :"6182a222015f9d30b7ae7620"},
-            {"trigram" : "skf", "name" : "Salim", id: "62dfa8865f56db0ad39af728"}
-        ]
+﻿const apiUrl = 'https://localhost:5001';
+let teams = {};
+fetch(`${apiUrl}/team`, 
+{
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json'        
     }
-];
+})
+.then(r => r.json())
+.then(d => {
+    teams = d;
+    teams.forEach(t => {
+        t.devs= [];
+        promises = [];
+        promises.push(
+            fetch(`${apiUrl}/user/team/${t.id}`,
+            {
+                method: 'GET',
+                headers: {
+                    'Accept': 'application/json'        
+                }
+            }).then(r => r.json())
+            .then(d => {
+                t.devs= d;
+            })
+        );
+    });
+    Promise.all(promises).then(() => {
+        init();
+    })
+});
+// [
+//     {
+//         name: 'cc', id: '626f8c46f7f94f30b0bc78d4', devs: [
+//             {"trigram" : "gza", "name": "Guillaume", id: "58480f8e35511bf7f82b961a"},
+//             {"trigram" : "jgt", "name": "Jose", id: "61483b5e4b18e97915fa94b9"},
+//             {"trigram" : "jla", "name": "Julien L", id: "5770de0b7cc5c29c20e1c935"},                         
+//             {"trigram" : "mbo", "name": "Marcin", id: "59b2635100bc9d3ead969dc9"},
+//             {"trigram" : "mdd", "name": "Mickael", id: "571f321e3d0918a2cde3a2a8"},
+//             {"trigram" : "rle", "name": "Rémi", id: "5c7fc4f442826f14c0a7e497"},            
+//             {"trigram" : "sci", "name": "Samuel", id: "615488db3da53285d95402dc"},                                
+//             {"trigram" : "ygr", "name": "Yann", id: "59b02122d3bc2d40e1a1ecb8"},
+//             {"trigram" : "jkl", "name": "Julien K", id: "61c205b702268157e004b923"},
+//             {"trigram" : "sao", "name": "Safi", id: "62a73ac1eeaf9f117353911a"}
+//         ]
+//     },
+//     {
+//         name: 'integration', id: '6180fec4c1f0071005db2e8c', devs: [
+//             {"trigram" : "anp", "name": "Anaïs", id: "5dd3f667cfe7b67ee3695081"},
+//             {"trigram" : "pst", "name": "Philippe", id: "57357594b69d9fd7e3cf8037"},
+//             {"trigram" : "afo", "name": "Antonin", id: "617a5c4c59490938673593f0" },
+//             {"trigram" : "cda", "name": "Christophe", id: "5721daa1b7364971e546197a"},                         
+//             {"trigram" : "mil", "name": "Michael", id: "61828a4b9c03d460e173385e" },
+//             {"trigram" : "nmi", "name": "Nicolas", id: "52933ef71af028a5410087b3" },
+//             {"trigram" : "vml", "name": "Vincent", id :"6182a222015f9d30b7ae7620"},
+//             {"trigram" : "skf", "name" : "Salim", id: "62dfa8865f56db0ad39af728"}
+//         ]
+//     }
+// ];
 const getTeam = () => {
     const tab = document.querySelector('.selected.tab');
     if (!tab){
@@ -78,7 +110,7 @@ const getDevList = () => {
         const devs = data.find(e => e.name === getTeam()).devs;
         devs.forEach(e => { 
             const li = document.createElement('li');
-            li.setAttribute('data-user-id', e.id);                        
+            li.setAttribute('data-user-id', e.trello);                        
             const div = document.createElement('div');
             div.classList.add('label');
             div.setAttribute('id', e.trigram);
@@ -103,7 +135,6 @@ const getDevList = () => {
     });
     saveDevList();
    }
-   initDevList();
 //#region Constants
 const SQRT_PI = Math.sqrt(Math.PI);
 const COLORS = ['#6867AC', '#A267AC', '#CE7BB0', '#FFBCD1', '#705089', '#A267AC', '#CE7BB0', '#ef628c', '#a83f5d','#af1642'];
@@ -528,15 +559,14 @@ const initEvents = () => {
 /**
  * Start point of the application.
  */
-const init = () => {
+const init = () => {             
+    initDevList();
+    initTabs();     
     retrieveDevList();
     initCanvasContext();
     resetPicker();
     initEvents();
+    buildCards(null, true);
+    getUserImages(); 
 }
 
-
-
-jQuery(function () {
-    init();  
-  });
