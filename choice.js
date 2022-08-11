@@ -1,4 +1,4 @@
-﻿const apiUrl = 'https://localhost:5001';
+﻿const apiUrl = 'https://iv-scrum-api.herokuapp.com/';
 let teams = {};
 fetch(`${apiUrl}/team`, 
 {
