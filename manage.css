@@ -1,0 +1,25 @@
+td, th{
+    padding: 5px !important;
+}
+.title {
+    font-size: 1.3em;
+}
+th{
+    text-align: initial;
+}
+body {
+    padding: 30px;
+}
+.teams {
+    justify-content: space-around;
+}
+.btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    font-size: 1.1em;
+}
+.btn i{
+    color: white;
+}
+.add{font-size: 1.3em;}

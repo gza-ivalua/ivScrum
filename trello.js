@@ -17,8 +17,17 @@ const initTabs = () => {
             tab.classList.add('selected') 
         }
         tab.setAttribute('data-trello-id', e.id);
-        tab.textContent = 'Team '  + e.name;
-        tabs.append(tab);        
+        const title = document.createElement('span');
+        title.textContent = 'Team '  + e.name;
+        tab.append(title);
+        const link = document.createElement('a');
+        link.classList.add('link')
+        link.href = 'manage.html';
+        const icon = document.createElement('i');
+        icon.classList.add('fa-solid', 'fa-pencil');        
+        link.append(icon);
+        tab.append(link);
+        tabs.append(tab);
     });
     document.querySelectorAll('.tab').forEach(e => e.addEventListener('click', tabClickHandler));
 }
@@ -116,16 +125,20 @@ const buildCards = async (userName, inProgress) => {
         const list = lists.filter(e => e.id === c.idList)[0];
         const card = document.createElement('div');
         card.classList.add('card');
+        const status = document.createElement('span');  
+        status.classList.add('ribbon');
+        status.textContent = list.name;   
+        card.appendChild(status);
         const link = document.createElement('a');
         link.classList.add('link');
         link.setAttribute('href', c.url);
         link.setAttribute('target', 'blank');
         link.textContent = c.name;
+        const tag = document.createElement('div');
+        tag.textContent = c.labels[0].name;
+        tag.classList.add('status')
         card.appendChild(link);   
-        const status = document.createElement('span');  
-        status.classList.add('status');
-        status.textContent = list.name;   
-        card.appendChild(status);
-        container.appendChild(card);        
+        card.appendChild(tag);   
+        container.appendChild(card);
     });
 }

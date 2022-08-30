@@ -5,6 +5,7 @@ const nextBtn = document.querySelector('.next');
 const marquee = document.querySelector('.dotted');
 let index = 0;
 const tracks = [
+    'Daft Punk - Make Love.mp3',
     'Kavinsky - Nightcall.mp3',
     'Kyle dixon and michael stein - Kids.mp3',
     'Timecop1983 - On the Run.mp3',

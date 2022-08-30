@@ -1,4 +1,5 @@
-﻿const apiUrl = 'https://iv-scrum-api.herokuapp.com';
+﻿// const apiUrl = 'https://iv-scrum-api.herokuapp.com';
+const apiUrl = 'https://localhost:5001'
 let teams = {};
 fetch(`${apiUrl}/team`, 
 {
@@ -8,73 +9,54 @@ fetch(`${apiUrl}/team`,
     }
 })
 .then(r => r.json())
-.then(d => {
-    teams = d;
-    teams.forEach(t => {
-        t.devs= [];
-        promises = [];
+.then(ts => {    
+    promises = [];
+    for(t of ts){
+        t.devs = [];
         promises.push(
-            fetch(`${apiUrl}/user/team/${t.id}`,
-            {
-                method: 'GET',
-                headers: {
-                    'Accept': 'application/json'        
-                }
-            }).then(r => r.json())
-            .then(d => {
-                t.devs= d;
+            new Promise((resolve, reject) => {
+                fetch(`${apiUrl}/user/team/${t.id}`,
+                {
+                    method: 'GET',
+                    headers: {
+                        'Accept': 'application/json'        
+                    }
+                })
+                .then(res => resolve(res))
+                .catch(e => {
+                    reject(e);
+                })
             })
         );
-    });
-    Promise.all(promises).then(() => {
-        init();
+    }
+    Promise.all(promises).then((res) => {
+        promises = [];
+        for(r of res){
+            promises.push(new Promise((resolve) => {
+                resolve(r.json());
+            }));
+        }
+        Promise.all(promises)
+            .then(data => {
+                for (d of data){
+                    for(dev of d){
+                        const team = ts.find(t => t.id === dev.team);
+                        team.devs.push(dev);
+                    }
+                }
+                teams = ts;
+                init();
+            });        
     })
 });
-// [
-//     {
-//         name: 'cc', id: '626f8c46f7f94f30b0bc78d4', devs: [
-//             {"trigram" : "gza", "name": "Guillaume", id: "58480f8e35511bf7f82b961a"},
-//             {"trigram" : "jgt", "name": "Jose", id: "61483b5e4b18e97915fa94b9"},
-//             {"trigram" : "jla", "name": "Julien L", id: "5770de0b7cc5c29c20e1c935"},                         
-//             {"trigram" : "mbo", "name": "Marcin", id: "59b2635100bc9d3ead969dc9"},
-//             {"trigram" : "mdd", "name": "Mickael", id: "571f321e3d0918a2cde3a2a8"},
-//             {"trigram" : "rle", "name": "Rémi", id: "5c7fc4f442826f14c0a7e497"},            
-//             {"trigram" : "sci", "name": "Samuel", id: "615488db3da53285d95402dc"},                                
-//             {"trigram" : "ygr", "name": "Yann", id: "59b02122d3bc2d40e1a1ecb8"},
-//             {"trigram" : "jkl", "name": "Julien K", id: "61c205b702268157e004b923"},
-//             {"trigram" : "sao", "name": "Safi", id: "62a73ac1eeaf9f117353911a"}
-//         ]
-//     },
-//     {
-//         name: 'integration', id: '6180fec4c1f0071005db2e8c', devs: [
-//             {"trigram" : "anp", "name": "Anaïs", id: "5dd3f667cfe7b67ee3695081"},
-//             {"trigram" : "pst", "name": "Philippe", id: "57357594b69d9fd7e3cf8037"},
-//             {"trigram" : "afo", "name": "Antonin", id: "617a5c4c59490938673593f0" },
-//             {"trigram" : "cda", "name": "Christophe", id: "5721daa1b7364971e546197a"},                         
-//             {"trigram" : "mil", "name": "Michael", id: "61828a4b9c03d460e173385e" },
-//             {"trigram" : "nmi", "name": "Nicolas", id: "52933ef71af028a5410087b3" },
-//             {"trigram" : "vml", "name": "Vincent", id :"6182a222015f9d30b7ae7620"},
-//             {"trigram" : "skf", "name" : "Salim", id: "62dfa8865f56db0ad39af728"}
-//         ]
-//     }
-// ];
 const getTeam = () => {
     const tab = document.querySelector('.selected.tab');
     if (!tab){
-        return retrieveTeam();
-    }
-    const id = tab.getAttribute('data-trello-id');
-    const team = teams.filter(e => e.id === id);
-    return team[0].name;
-}
-const retrieveDevList = () => {    
-    return getStorageItem(`devList_${getTeam()}`);
-}
-const retrieveTeam = () => {
-    const t = getStorageItem('team');
-    if (!t){
         return teams[0].name;
     }
+    const id = tab.getAttribute('data-trello-id');
+    const team = teams.find(e => e.id === id);
+    return team.name;
 }
 const getStorageItem = (key) => {
     return localStorage.getItem(key);
@@ -99,18 +81,14 @@ const getDevList = () => {
     }, []);
     return res;
 }
- const saveDevList = () => {
-    localStorage.setItem(`devList_${getTeam()}`, getDevList());
-}
  function initDevList() {
     const ul = document.querySelector('.dev.column');
-    ul.innerHTML = '';
-    const selectedDev = retrieveDevList();
+    ul.innerHTML = '';    
     loadJSON((data) => { 
         const devs = data.find(e => e.name === getTeam()).devs;
         devs.forEach(e => { 
             const li = document.createElement('li');
-            li.setAttribute('data-user-id', e.trello);                        
+            li.setAttribute('data-user-id', e.trello);            
             const div = document.createElement('div');
             div.classList.add('label');
             div.setAttribute('id', e.trigram);
@@ -121,20 +99,31 @@ const getDevList = () => {
             const chk = document.createElement('input');
             chk.setAttribute('value', e.trigram);
             chk.setAttribute('id', e.trigram);
+            chk.setAttribute('data-user', e.id);
             chk.setAttribute('type', 'checkbox');
-            if (selectedDev)
-                chk.checked = selectedDev.indexOf(e.trigram) > -1;
-            else{
-                chk.checked = true;
-            }
+            chk.checked = e.here;   
+            chk.addEventListener('change', chkChangeHandler)
             li.append(div);
             div.append(label);
             li.append(chk);
             ul.append(li);
         })
-    });
-    saveDevList();
+    });    
    }
+const chkChangeHandler = (e) => {
+    const target = e.target,
+    id = target.getAttribute('data-user');
+    const data = new FormData();
+    data.append('here', target.checked);
+    const myHeaders = new Headers();
+    myHeaders.set('Accept', 'application/json'); 
+    fetch(`${apiUrl}/user/${id}/here`, 
+    {
+        method: 'POST',
+        headers: myHeaders,
+        body: data
+    });
+}
 //#region Constants
 const SQRT_PI = Math.sqrt(Math.PI);
 const COLORS = ['#6867AC', '#A267AC', '#CE7BB0', '#FFBCD1', '#705089', '#A267AC', '#CE7BB0', '#ef628c', '#a83f5d','#af1642'];
@@ -381,12 +370,16 @@ const rotateWheel = (timestamp, initialSpeed, deceleration) => {
 
 
 //#region Dev utilities
+let colorIndex = 0;
+const fonts = ['ancient', 'romantice', 'magic-retro', 'xantegrode-signature', 'typewriter']
+const colors = ['green', 'yellow', 'orange', 'red', 'pink'];
 const setDevAsCurrent = dev => {
     buildCards(dev);
     if(pickedDevs.length){
         stopDevTimer(pickedDevs[pickedDevs.length - 1]);
     }
-    $('txtDevCurrent').innerHTML = `Current: ${getDevName(dev)}`;
+    const txtDevCurrent = document.getElementById('txtDevCurrent');
+    txtDevCurrent.textContent = `${getDevName(dev)}`;
     const iDev = remainingDevs.indexOf(dev);
     remainingDevs.splice(iDev, 1);
     pickedDevs.push(dev);
@@ -466,7 +459,6 @@ const pickDev = () => {
     stopTimer = false;
     // First, check if the list has been changed since the last run
     updateDevListsIfRequired();
-
     // No remaining dev to pick -> we do nothing
     if (remainingDevs.length === 0) {
         stopDevTimer(pickedDevs[pickedDevs.length - 1]);
@@ -474,7 +466,6 @@ const pickDev = () => {
         addMessage('No remaining dev -> please reset the picker before picking another one!', 'warning');
         return;
     }
-
     // If wheel is rotating, waiting for completion
     if (typeof startTimestamp !== 'undefined') {
         addMessage('The wheel is always rotating, please wait...', 'warning');
@@ -482,47 +473,72 @@ const pickDev = () => {
     }
     if (pickedDevs.length === 0){
         startCountDown();
-    }     
+    }
     // If some dev as already been picked, move it to the done part
     if ($('txtDevCurrent').innerHTML.indexOf('Current: ') > -1){                
         $('txtDevDone').innerHTML = pickedDevs.map(dev => `<span class='dev-trigram'>${getDevName(dev)}</span>`).join(', ');
     }
-        
-
     // and set the current text to 'PICKING...'
-    $('txtDevCurrent').innerHTML = 'Picking...';
+    // $('txtDevCurrent').innerHTML = 'Picking...';
 
     if (remainingDevs.length === 1) {
-        redrawAll(remainingDevs, Math.PI);
+        // redrawAll(remainingDevs, Math.PI);
         setDevAsCurrent(remainingDevs[0]);
         return;
-    }
-
+    }    
+    let stop = false;
+    setTimeout(() => {
+        stop = true;
+    }, 3500);
+    let i = 0;      
+    const pickDevInterval = setInterval(() => {
+        document.querySelectorAll('.dev.column li.selected').forEach(li => {
+            li.classList.remove('selected')
+        });
+        const fi = getRandomInt(fonts.length);
+        const f = fonts[fi];        
+        const txtDevCurrent = document.getElementById('txtDevCurrent');
+        txtDevCurrent.setAttribute('data-font', f);
+        txtDevCurrent.textContent = remainingDevs[i];
+        document.getElementById(remainingDevs[i]).closest('li').classList.add('selected');
+        if (stop){                        
+            document.getElementById(remainingDevs[i]).closest('li').classList.add('selected');
+            setDevAsCurrent(remainingDevs[i]);            
+            clearInterval(pickDevInterval);            
+        }
+        else {                                                                        
+            txtDevCurrent.setAttribute('data-color', colors[colorIndex]);
+            colorIndex++;
+            if (colorIndex === colors.length){
+                colorIndex = 0;
+            }
+            i = getRandomInt(remainingDevs.length -1);
+        }
+    }, 150);
     // Run the wheel
-    const initialSpeed = rand(7, 23);
-    const deceleration = rand(0.71, 2.53);
-    window.requestAnimationFrame(timestamp => rotateWheel(timestamp, initialSpeed, deceleration));
+    // const initialSpeed = rand(7, 23);
+    // const deceleration = rand(0.71, 2.53);
+    // window.requestAnimationFrame(timestamp => rotateWheel(timestamp, initialSpeed, deceleration));
 }
+function getRandomInt(max) {
+    return Math.floor(Math.random() * max);
+  }
 const getDevName = (dev) => {
     if (dev.toLowerCase() === 'mbo')
         return 'Chaton';
-    return dev.toUpperCase();
-}
-const saveTeam = () => {
-    localStorage.setItem('team', getTeam());
+    return dev;
 }
 //#endregion
 
 
 const resetPicker = () => {
-      
     stopTimer = true;    
     $('txtDevDone').innerHTML = '';
     devList = getDevList();
     remainingDevs = [...devList];
     pickedDevs = [];
     document.title = `Scrum dev picker`;
-    redrawAll(remainingDevs);
+    // redrawAll(remainingDevs);
     const cards = document.querySelector('#cards');
     if(cards){
         cards.innerHTML = '';
@@ -534,6 +550,9 @@ const resetPicker = () => {
     if (typeof lists !== 'undefined') {        
         lists = [];
     } 
+    document.querySelectorAll('.dev.column li.selected').forEach(li => {
+        li.classList.remove('selected')
+    })
 }
 
 const captureKey = evt => {
@@ -546,12 +565,7 @@ const captureKey = evt => {
  */
 const initEvents = () => {
     $('btnPick').addEventListener('click', pickDev);
-    $('btnReset').addEventListener('click', resetPicker);
-    document.querySelectorAll('input').forEach(item => {
-        item.addEventListener('change', event => {
-            saveDevList();
-        })
-      });
+    $('btnReset').addEventListener('click', resetPicker);    
     document.addEventListener('keypress', captureKey);
 }
 
@@ -561,9 +575,8 @@ const initEvents = () => {
  */
 const init = () => {             
     initDevList();
-    initTabs();     
-    retrieveDevList();
-    initCanvasContext();
+    initTabs();         
+    // initCanvasContext();
     resetPicker();
     initEvents();
     buildCards(null, true);

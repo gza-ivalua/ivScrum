@@ -10,30 +10,25 @@
     <meta charset="UTF-8">
     <title>Scrum dev picker</title>
     <link rel="stylesheet" href="choice.css">
+    <link rel="stylesheet" href="common.css">
     <link rel="stylesheet" href="clock.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/css/all.min.css" integrity="sha512-1sCRPdkRXhBV2PBLUdRb4tMg1w2YPf37qatUFeS7zlBy7jJI8Lf4VHwWfZZfpXtYSLy85pkm9GaYVYMfw5BC1A==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.2/js/all.min.js" integrity="sha512-8pHNiqTlsrRjVD4A/3va++W1sMbUHwWxxRPWNyVlql3T+Hgfd81Qc6FC5WMXDC+tSauxxzp1tgiAvSKFu1qIlA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 </head>
 
 <body>
     <div id="container">
         <div class="column">
-            <div class="row space-evenly">
+            <div class="flex row space-evenly">
                 <div class="flex column team">
                     <ul class="tabs"></ul>
                     <ul class="dev column">
                     </ul>
                 </div>
                 
-                <canvas width="360" height="360" id="picker"></canvas>
+                <!-- <canvas width="360" height="360" id="picker"></canvas> -->
                
-            </div>
-            
-            <div id="infoArea">
-                <div id="currentDevInfo">
-                    <span id="txtDevCurrent"></span>
-                    <span id="txtDevDone"></span>
-                </div>
-            </div>
-    
+            </div>            
             <div id="settings">                                
                 <div id="actions">                    
                     <button id="btnPick" class="btn"><span>Pick</span></button>
@@ -64,7 +59,13 @@
                 </div>
                 </div>
             </div>
-        </div>            
+        </div>   
+        <div id="infoArea">
+            <div id="currentDevInfo">
+                <span id="txtDevCurrent"></span>
+                <span id="txtDevDone"></span>
+            </div>
+        </div>         
         <div class="column info">
             <div id="cards">
             </div>            

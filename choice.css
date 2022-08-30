@@ -1,27 +1,4 @@
-﻿@font-face {
-    font-family: 'Segoe UI';
-    src: url('https://cdnjs.cloudflare.com/ajax/libs/myscript/4.1.3/fonts/diagram/segoeui.otf');    
-    font-weight: normal;
-    font-style: normal;
-}
-@import url('https://fonts.googleapis.com/css2?family=Warnes&display=swap');
-
-@font-face {
-    font-family: "dotted";
-    src: url(dotted.ttf) format('truetype');
-   }
-@font-face {
-font-family: "LED Dot-Matrix";
-src: url('LED Dot-Matrix.ttf') format('truetype');
-}
-
-html,
-body,
-#container{
-    height: 100%;
-    width: 100%;
-    margin: 0;    
-}
+﻿
 #player{
     display: none;
 }
@@ -44,16 +21,7 @@ li[data-user-id] img{
     width: 30px;
     border-radius: 50%;
 }
-body{
-    background-image: url('wallpaper.jpeg');
-    -webkit-background-size: cover;
-  -moz-background-size: cover;
-  -o-background-size: cover;
-  background-size: cover;
-    background-color: #282828;
-    color: white;
-    font-family: 'Segoe UI';
-}
+
 .team{
     padding: 0 50px !important;
 }
@@ -73,11 +41,7 @@ input{
     
     align-self: flex-end;
 }
-.column {
-    flex-direction: column;
-    padding: 10px;
-    flex: 1 1 0;
-}
+
 .info{
     display: flex;
     flex-direction: column;
@@ -89,17 +53,15 @@ input{
     align-items: flex-start;
     flex-wrap: wrap;
 }
-.card{
-    overflow: hidden;
+.card{    
     display: flex;
     background: rgba(255, 255, 255, .3);
     color: #353535;
     border-radius: 5px;
-    margin: 10px;    
+    margin: 20px;    
     min-height: 190px;
     width: 190px;
-    flex-direction: column;
-    justify-content: space-between;
+    flex-direction: column;    
 }
 .card .link {
     padding: 20px 5px;
@@ -107,18 +69,16 @@ input{
     color: white;
 }
 .card .status {
-    color: #1c0037;
+    color: #dadada;
     background: rgba(255, 255, 255, .2);
     height: 30px;
-    font-weight: bolder;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    line-height: 30px;
+    font-weight: bolder;    
+    font-size: .8em;;
+    padding: 0 10px;
+    overflow: hidden;
 }
-.row{
-    display: flex;
-    flex-direction: row;
-}
+
 .row > div{
     padding: 3px;
 }
@@ -149,6 +109,7 @@ input{
 #infoArea {
     display: flex;
     justify-content: space-around;
+    width: 150px;
 }
 
 #currentDevInfo {
@@ -238,8 +199,7 @@ input{
     list-style-type: none;
     background: rgba(255, 255, 255, .3);
     border-radius: 5px;
-    border-top: none;
-    padding: 10px;
+    border-top: none;    
     border-top-left-radius: 0;
     border-top-right-radius: 0;
   }
@@ -257,12 +217,13 @@ input{
   .dev.column li{
     position: relative;
     transition: ease .5s;
-    padding: 5px 3px;
+    padding: 5px 10px;
     display: flex;  
     justify-content: space-between;
     align-items: center;
   }
-  .dev.column li:hover {
+  .dev.column li:hover,
+  .dev.column li.selected {
     background: rgba(0, 0, 0, .3);
     }
   .dev.column li:after {
@@ -272,6 +233,7 @@ input{
     background: #484141;
     position: absolute;
     bottom: 0px;
+    left: 0;
     }
   .btn{
     cursor: pointer;
@@ -311,4 +273,72 @@ input{
     border-left: none;
     z-index: 0;
     border-top: none;
+}
+.tab .link {
+    display: none;
+}
+.selected .link{
+    display: initial !important;
+}
+.ribbon{
+    -webkit-text-size-adjust: 100%;
+    font-family: Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    -webkit-box-direction: normal;
+    box-sizing: inherit;
+    text-decoration: none;
+    display: inline-block;
+    line-height: 1;
+    vertical-align: baseline;
+    background-image: none;
+    padding: .5833em .833em;
+    text-transform: none;
+    font-weight: 700;
+    border: 0 solid transparent;
+    transition: background .1s ease;
+    font-size: .85714286rem;    
+    position: relative;
+    margin: 0;
+    min-width: max-content;
+    border-radius: 0 .28571429rem .28571429rem 0;
+    left: calc(0em - 1.2em);
+    margin-right: -1.2em;
+    padding-left: calc(1rem + 1.2em);
+    padding-right: 1.2em;
+    background-color: #9155a3!important;
+    color: #fff!important;
+    border-color: #57316b!important;
+    margin-top: 1em;
+    width: 1px;
+}
+.ribbon::after{
+    position: absolute;
+    content: '';
+    top: 100%;
+    left: 0;
+    background-color: transparent!important;
+    border-style: solid;
+    border-width: 0 1.2em 1.2em 0;
+    border-color: transparent;
+    border-right-color: inherit;
+    width: 0;
+    height: 0;
+}
+[data-color='yellow']{
+    color: yellow;
+}
+[data-color='orange']{
+    color: orange;
+}
+[data-color='red']{
+    color: rgb(255, 56, 56);
+}
+[data-color='green']{
+    color: green;
+}
+[data-color='purple']{
+    color: rgb(171, 33, 171);
+}
+[data-color='pink']{
+    color: rgb(255, 32, 244);
 }
