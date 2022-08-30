@@ -1,6 +1,6 @@
-//const apiUrl = 'https://iv-scrum-api.herokuapp.com';
+const apiUrl = 'https://iv-scrum-api.herokuapp.com';
 const trelloApiQuerystring = 'key=10e69760de5166baedbbf5349ee6a617&token=0e76f01f0aa92582ad6a4a1821f44a28781fdd4f1a373390b32c4daae6fd2d8e';
-const apiUrl = 'https://localhost:5001'
+// const apiUrl = 'https://localhost:5001'
 fetch(`${apiUrl}/team`, 
 {
     method: 'GET',
