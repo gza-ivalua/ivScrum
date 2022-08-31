@@ -114,7 +114,7 @@ const buildSelect = (members) => {
     });
     return select;
 }
-const init = (teams) => {
+const init = async (teams) => {
     const hiddenColumns = ['id', 'team'];
     teams.forEach(async team => {
         const trelloMembers = await getTrelloMembers(team.trelloId);
@@ -199,28 +199,9 @@ const init = (teams) => {
                 row.append(cell);
                 cell.append(deleteButton);
             })
-        })
-}
-const getTrelloBoards = async () => {
-    const myHeaders = new Headers();
-    myHeaders.set('Accept', 'application/json');    
-    return await fetch(`${trelloApiUrl}/organizations/6131db27b441b81ed59e364e/boards?${trelloApiQuerystring}`, 
-        {method: 'GET', headers: myHeaders})
-        .then(res => res.json())        
-}
-const buildBoardSelect = (boards) => {
-    const select = document.createElement('select');
-    boards.forEach(board => {
-        const option = document.createElement('option');
-        option.value = board.id;
-        option.textContent = board.name;
-        select.append(option);
-    });
-    return select;
-}
-document.addEventListener("DOMContentLoaded", async () => {
+        });
     const boards = await getTrelloBoards();
-    const select = buildBoardSelect(boards);
+    const select = buildBoardSelect(boards, teams);
     const addTeamButton = document.querySelector('.add-team');
     document.querySelector('.new-team').prepend(select);
     addTeamButton.addEventListener('click', (e) => {
@@ -238,4 +219,23 @@ document.addEventListener("DOMContentLoaded", async () => {
             body: data
         })
     })
-});
+}
+const getTrelloBoards = async () => {
+    const myHeaders = new Headers();
+    myHeaders.set('Accept', 'application/json');    
+    return await fetch(`${trelloApiUrl}/organizations/6131db27b441b81ed59e364e/boards?${trelloApiQuerystring}`, 
+        {method: 'GET', headers: myHeaders})
+        .then(res => res.json())        
+}
+const buildBoardSelect = (boards, teams) => {
+    const select = document.createElement('select');
+    boards.forEach(board => {
+        if (teams.find(t => t.trelloId === board.id))
+            return;
+        const option = document.createElement('option');
+        option.value = board.id;
+        option.textContent = board.name;
+        select.append(option);
+    });
+    return select;
+}
