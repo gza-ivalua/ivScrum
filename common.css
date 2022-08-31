@@ -89,6 +89,9 @@ body{
     padding: 0 8px;
     pointer-events: all !important;
 }
+.small.btn {
+    font-size: 1em;
+}
 .btn{
     cursor: pointer;
     display: flex;
@@ -131,4 +134,17 @@ body{
 #container {
     text-align: center;
     display: flex;
+}
+input[type="text"], select {
+    height: 1.3em;
+    padding: 3px 10px;
+    border-width: 1px;
+}
+select {
+    height: 1.9em;
+    max-width: 20em;
+}
+input[type="checkbox"]{
+    width: 1.2em;
+    height: 1.2em;
 }
