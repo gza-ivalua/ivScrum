@@ -25,9 +25,6 @@ li[data-user-id] img{
 .team{
     padding: 0 50px !important;
 }
-#container{
-    display: flex;
-}
 .button {
     cursor: pointer;
     padding: 0 8px;
@@ -82,10 +79,6 @@ input{
 .row > div{
     padding: 3px;
 }
-#container {
-    text-align: center;
-}
-
 #picker {
     margin: 20px;
     height: fit-content;
@@ -235,45 +228,7 @@ input{
     bottom: 0px;
     left: 0;
     }
-  .btn{
-    cursor: pointer;
-    display: flex;
-    width: fit-content;
-    padding: 5px 20px;
-    border: 3px solid white;
-    color: white;
-    text-decoration: none;
-    position: relative;
-    z-index: 1;
-    margin: 15px;
-    font-weight: 600;
-    background: rgba(255, 255, 255, .35);
-    transform: skewX(345deg);
-    font-size:1.5em;
-}
-.btn:hover .icon{
-    width: 35px;
-}
-.btn .icon {
-    letter-spacing: -4px;
-    margin: 0 0 0 10px;
-    transition: width .5s;
-    width: 0;
-    overflow: hidden;
-}
-.btn:before{
-    content: '';
-    border: 1px solid red;
-    width: calc(100% + 5px);
-    position: absolute;
-    height: calc(100% + 5px);
-    top: 3px;
-    left: 3px;
-    border: 3px solid white;
-    border-left: none;
-    z-index: 0;
-    border-top: none;
-}
+ 
 .tab .link {
     display: none;
 }

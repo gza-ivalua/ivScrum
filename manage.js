@@ -1,6 +1,7 @@
 const apiUrl = 'https://iv-scrum-api.herokuapp.com';
+const trelloApiUrl = 'https://api.trello.com/1'
 const trelloApiQuerystring = 'key=10e69760de5166baedbbf5349ee6a617&token=0e76f01f0aa92582ad6a4a1821f44a28781fdd4f1a373390b32c4daae6fd2d8e';
-// const apiUrl = 'https://localhost:5001'
+//const apiUrl = 'https://localhost:5001'
 fetch(`${apiUrl}/team`, 
 {
     method: 'GET',
@@ -15,7 +16,7 @@ fetch(`${apiUrl}/team`,
         t.devs = [];
         promises.push(
             new Promise((resolve, reject) => {
-                fetch(`${apiUrl}/user/team/${t.id}`,
+                fetch(`${apiUrl}/user/team/${t.id}?newUser=true`,
                 {
                     method: 'GET',
                     headers: {
@@ -70,7 +71,7 @@ const fieldChangeHandler = (e) => {
     const data = new FormData();  
     data.append('Team', teamContainer.getAttribute('data-team'));
     const id = e.target.closest('tr').getAttribute('data-dev-id');
-    if (id){
+    if (id !== 'null'){
         data.append('Id',id);
     }
     const row = e.target.closest('tr');
@@ -99,7 +100,7 @@ const fieldChangeHandler = (e) => {
 const getTrelloMembers = async (teamId) => {
     const myHeaders = new Headers();
     myHeaders.set('Accept', 'application/json');    
-    return await fetch(`https://api.trello.com/1/boards/${teamId}/members?${trelloApiQuerystring}`, 
+    return await fetch(`${trelloApiUrl}/boards/${teamId}/members?${trelloApiQuerystring}`, 
         {method: 'GET', headers: myHeaders})
         .then(res => res.json())        
 }
@@ -127,7 +128,7 @@ const init = (teams) => {
         const titleContainer = document.createElement('div');
         const title = document.createElement('span');
         const addBtn = document.createElement('button');
-        addBtn.classList.add('btn', 'add')
+        addBtn.classList.add('add')
         const icon = document.createElement('i');
         icon.classList.add('fa-solid', 'fa-user-plus');
         addBtn.setAttribute('type', 'button');        
@@ -178,7 +179,6 @@ const init = (teams) => {
                 first = false;
                 const cell = document.createElement('td');
                 const deleteButton = document.createElement('button');
-                deleteButton.classList.add('btn')
                 const icon = document.createElement('i');
                 icon.classList.add('fa-solid', 'fa-trash-can');
                 deleteButton.append(icon);                
@@ -201,3 +201,41 @@ const init = (teams) => {
             })
         })
 }
+const getTrelloBoards = async () => {
+    const myHeaders = new Headers();
+    myHeaders.set('Accept', 'application/json');    
+    return await fetch(`${trelloApiUrl}/organizations/6131db27b441b81ed59e364e/boards?${trelloApiQuerystring}`, 
+        {method: 'GET', headers: myHeaders})
+        .then(res => res.json())        
+}
+const buildBoardSelect = (boards) => {
+    const select = document.createElement('select');
+    boards.forEach(board => {
+        const option = document.createElement('option');
+        option.value = board.id;
+        option.textContent = board.name;
+        select.append(option);
+    });
+    return select;
+}
+document.addEventListener("DOMContentLoaded", async () => {
+    const boards = await getTrelloBoards();
+    const select = buildBoardSelect(boards);
+    const addTeamButton = document.querySelector('.add-team');
+    document.querySelector('.new-team').prepend(select);
+    addTeamButton.addEventListener('click', (e) => {
+        const selectedTeam = select.value;
+        const data = new FormData();
+        data.append('trelloId', selectedTeam);
+        data.append('name', boards.find(t => t.id === selectedTeam).name);
+        const headers = new Headers();        
+        headers.append('mode', 'cors');
+        headers.append('Accept', '*/*'); 
+        fetch(`${apiUrl}/team`, 
+        {
+            method: 'POST',
+            headers: headers,
+            body: data
+        })
+    })
+});

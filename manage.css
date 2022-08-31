@@ -7,19 +7,21 @@ td, th{
 th{
     text-align: initial;
 }
-body {
-    padding: 30px;
-}
 .teams {
     justify-content: space-around;
 }
-.btn {
+button {
     background: transparent;
     border: none;
     cursor: pointer;
     font-size: 1.1em;
 }
-.btn i{
+button i{
     color: white;
 }
-.add{font-size: 1.3em;}
+.add{
+    font-size: 1.3em;
+}
+.new-team {
+    align-items: center;
+}
