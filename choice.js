@@ -1,6 +1,21 @@
 ﻿const apiUrl = 'https://iv-scrum-api.herokuapp.com';
 // const apiUrl = 'https://localhost:5001'
 let teams = {};
+const DccReminder = () => {
+    const CCtab = document.querySelector('.tab.selected[data-team-id="2b139375-8dda-40ae-94d9-c4d58713ac91"]');
+    const txt = document.getElementById('txtDevCurrent');
+    if (!CCtab){
+        txt.textContent = null;
+        return;
+    }
+    var a = new Date('24 december 2022')
+    undefined
+    var b = new Date()
+    undefined
+    const diffTime = Math.abs(a - b);
+    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
+    txt.textContent = `${diffDays} Days Before DCC Release...`;    
+}
 fetch(`${apiUrl}/team`, 
 {
     method: 'GET',
@@ -473,14 +488,7 @@ const pickDev = () => {
     }
     if (pickedDevs.length === 0){
         startCountDown();
-    }
-    // If some dev as already been picked, move it to the done part
-    if ($('txtDevCurrent').innerHTML.indexOf('Current: ') > -1){                
-        $('txtDevDone').innerHTML = pickedDevs.map(dev => `<span class='dev-trigram'>${getDevName(dev)}</span>`).join(', ');
-    }
-    // and set the current text to 'PICKING...'
-    // $('txtDevCurrent').innerHTML = 'Picking...';
-
+    }        
     if (remainingDevs.length === 1) {
         // redrawAll(remainingDevs, Math.PI);
         setDevAsCurrent(remainingDevs[0]);
@@ -539,8 +547,7 @@ const getDevName = (dev) => {
 
 
 const resetPicker = () => {
-    stopTimer = true;    
-    $('txtDevDone').innerHTML = '';
+    stopTimer = true;        
     devList = getDevList();
     remainingDevs = [...devList];
     pickedDevs = [];
@@ -583,7 +590,7 @@ const initEvents = () => {
 const init = () => {             
     initDevList();
     initTabs();         
-    // initCanvasContext();
+    DccReminder();
     resetPicker();
     initEvents();
     buildCards(null, true);

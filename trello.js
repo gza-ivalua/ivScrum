@@ -4,8 +4,9 @@ const tabClickHandler = async (e)=> {
     e.target.closest('.tab').classList.add('selected');
     initDevList();
     resetPicker();  
+    DccReminder();
     await getUsers(true);  
-    getUserImages();      
+    getUserImages();       
 }
 const initTabs = () => {
     const tabs = document.querySelector('.tabs');

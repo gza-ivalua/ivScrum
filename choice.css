@@ -89,12 +89,12 @@ input{
 }
 #settings {
     display: flex;
-    justify-content: center;
+    
     align-items: center;
 }
 
 #actions {
-    margin-left: 10px;
+    margin-left: 70px;
     display: flex;
     flex-direction: row;
     justify-content: space-around;
@@ -107,9 +107,11 @@ input{
 }
 
 #currentDevInfo {
-    padding: 1em;
-    margin: 1em;
- 
+    padding: .5em;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    flex-direction: column;
 }
 
 #currentDevInfo>span {
