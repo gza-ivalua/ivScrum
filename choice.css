@@ -287,14 +287,20 @@ input{
     color: orange;
 }
 [data-color='red']{
-    color: rgb(255, 56, 56);
+    color: rgb(231 0 0);
 }
 [data-color='green']{
-    color: green;
+    color: #30c830;
 }
 [data-color='purple']{
     color: rgb(171, 33, 171);
 }
 [data-color='pink']{
     color: rgb(255, 32, 244);
+}
+[data-color='blue']{
+    color: rgb(28 187 255);
+}
+[data-color='white']{
+    color: white;
 }

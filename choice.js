@@ -372,7 +372,7 @@ const rotateWheel = (timestamp, initialSpeed, deceleration) => {
 //#region Dev utilities
 let colorIndex = 0;
 const fonts = ['ancient', 'romantice', 'magic-retro', 'xantegrode-signature', 'typewriter']
-const colors = ['green', 'yellow', 'orange', 'red', 'pink'];
+const colors = ['green', 'yellow', 'orange', 'red', 'pink', 'blue', 'white'];
 const setDevAsCurrent = dev => {
     buildCards(dev);
     if(pickedDevs.length){
@@ -499,7 +499,7 @@ const pickDev = () => {
         const f = fonts[fi];        
         const txtDevCurrent = document.getElementById('txtDevCurrent');
         txtDevCurrent.setAttribute('data-font', f);
-        txtDevCurrent.textContent = remainingDevs[i];
+        txtDevCurrent.textContent = toPascalCase(remainingDevs[i]);
         document.getElementById(remainingDevs[i]).closest('li').classList.add('selected');
         if (stop){                        
             document.getElementById(remainingDevs[i]).closest('li').classList.add('selected');
@@ -514,12 +514,19 @@ const pickDev = () => {
             }
             i = getRandomInt(remainingDevs.length -1);
         }
-    }, 150);
+    }, 200);
     // Run the wheel
     // const initialSpeed = rand(7, 23);
     // const deceleration = rand(0.71, 2.53);
     // window.requestAnimationFrame(timestamp => rotateWheel(timestamp, initialSpeed, deceleration));
 }
+const toPascalCase = (sentence) => sentence
+   .split(' ')
+   .map(word => word[0]
+   .toUpperCase()
+   .concat(word.slice(1)))
+   .join('');
+
 function getRandomInt(max) {
     return Math.floor(Math.random() * max);
   }
