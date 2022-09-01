@@ -4,6 +4,9 @@ const tabClickHandler = async (e)=> {
     e.target.closest('.tab').classList.add('selected');
     initDevList();
     resetPicker();  
+    const txt = document.getElementById('txtDevCurrent');
+    txt.removeAttribute('data-font');
+    txt.removeAttribute('data-color');
     DccReminder();
     await getUsers(true);  
     getUserImages();       
