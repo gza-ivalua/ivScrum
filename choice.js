@@ -520,7 +520,7 @@ const pickDev = () => {
             if (colorIndex === colors.length){
                 colorIndex = 0;
             }
-            i = getRandomInt(remainingDevs.length -1);
+            i = getRandomInt(remainingDevs.length);
         }
     }, 200);
     // Run the wheel
