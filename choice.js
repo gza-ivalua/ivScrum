@@ -522,11 +522,7 @@ const pickDev = () => {
             }
             i = getRandomInt(remainingDevs.length);
         }
-    }, 200);
-    // Run the wheel
-    // const initialSpeed = rand(7, 23);
-    // const deceleration = rand(0.71, 2.53);
-    // window.requestAnimationFrame(timestamp => rotateWheel(timestamp, initialSpeed, deceleration));
+    }, 200);    
 }
 const toPascalCase = (sentence) => sentence
    .split(' ')
@@ -583,7 +579,25 @@ const initEvents = () => {
     document.addEventListener('keypress', captureKey);
 }
 
-
+const initCauchyStatus = () => {
+    fetch(`${apiUrl}/branch/status`, 
+    {
+    method: 'GET',
+    headers: {
+        'Accept': 'application/json'        
+    }
+    })
+    .then(r => r.json())
+    .then(s => {   
+        const img = document.getElementById('cauchyStatusImg');
+        const icon = 'locked'
+        if (s === true){
+            icon = 'opened'
+        }
+        img.setAttribute('src', `assets/icons/${icon}.png`);
+        img.classList.remove('hidden')
+    })
+}
 /**
  * Start point of the application.
  */
@@ -595,5 +609,6 @@ const init = () => {
     initEvents();
     buildCards(null, true);
     getUserImages(); 
+    initCauchyStatus();
 }
 

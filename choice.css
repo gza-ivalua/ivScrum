@@ -8,6 +8,7 @@
     bottom: 5px;
     padding: 0 !important;
     display: flex;
+    align-items: center;
 }
 .hidden{
     opacity: 0;
@@ -16,6 +17,7 @@
     font-family: 'LED Dot-Matrix';
     font-size: 2em;
     color: #fbceff;
+    margin: auto;
 }
 li[data-user-id] img{
     width: 30px;
@@ -305,4 +307,8 @@ input{
 }
 [data-color='white']{
     color: white;
+}
+#cauchyStatusImg {
+    width: 55px;
+    height: 55px;
 }
