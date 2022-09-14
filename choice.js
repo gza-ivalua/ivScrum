@@ -590,7 +590,7 @@ const initCauchyStatus = () => {
     .then(r => r.json())
     .then(s => {   
         const img = document.getElementById('cauchyStatusImg');
-        const icon = 'locked'
+        let icon = 'locked'
         if (s === true){
             icon = 'opened'
         }
