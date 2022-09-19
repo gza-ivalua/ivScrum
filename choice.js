@@ -603,12 +603,16 @@ const initCauchyStatus = () => {
  */
 const init = () => {             
     initDevList();
-    initTabs();         
-    DccReminder();
+    initTabs();             
     resetPicker();
     initEvents();
     buildCards(null, true);
-    getUserImages(); 
-    initCauchyStatus();
+    setTimeout(() => {
+        getUserImages();
+    }, 0); 
+    setTimeout(() => {
+        initCauchyStatus();
+    }, 0); 
+    DccReminder();
 }
 
