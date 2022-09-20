@@ -1,0 +1,15 @@
+.chart-container {
+    width: 65%;    
+}
+#backlogChart{
+    margin: 15px;
+}
+.cauchy-status {
+    padding: 15px;
+    align-items: flex-start;
+    flex-direction: column;
+    width: fit-content;
+}
+.cauchy-status img {
+    margin: auto;
+}
