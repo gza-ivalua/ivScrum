@@ -594,7 +594,7 @@ const initCauchyStatus = () => {
         if (s === true){
             icon = 'opened'
         }
-        img.setAttribute('src', `assets/icons/${icon}.png`);
+        img.setAttribute('src', `assets/icons/delorean-${icon}.png`);
         img.classList.remove('hidden')
     })
 }
