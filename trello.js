@@ -22,7 +22,7 @@ const initTabs = () => {
         }
         tab.setAttribute('data-trello-id', e.id);
         const title = document.createElement('span');
-        title.textContent = 'Team '  + e.name;
+        title.textContent = e.name;
         tab.append(title);
         const link = document.createElement('a');
         link.classList.add('link')

@@ -95,17 +95,17 @@ input{
     align-items: center;
 }
 
-#actions {
-    margin-left: 70px;
+#actions { 
     display: flex;
     flex-direction: row;
     justify-content: space-around;
 }
 
 #infoArea {
+    margin-top: 80px;
     display: flex;
     justify-content: space-around;
-    width: 150px;
+    width: 180px;
 }
 
 #currentDevInfo {
