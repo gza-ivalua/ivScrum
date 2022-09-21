@@ -1,4 +1,5 @@
-const apiUrl = 'https://localhost:5001';
+// const apiUrl = 'https://localhost:5001';
+const apiUrl = 'https://iv-scrum-api.herokuapp.com';
 const myHeaders = new Headers();
     myHeaders.set('Accept', 'application/json'); 
     fetch(`${apiUrl}/backlog/2b139375-8dda-40ae-94d9-c4d58713ac91`,
