@@ -25,44 +25,8 @@ fetch(`${apiUrl}/team`,
 })
 .then(r => r.json())
 .then(ts => {    
-    promises = [];
-    for(t of ts){
-        t.devs = [];
-        promises.push(
-            new Promise((resolve, reject) => {
-                fetch(`${apiUrl}/user/team/${t.id}`,
-                {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'        
-                    }
-                })
-                .then(res => resolve(res))
-                .catch(e => {
-                    reject(e);
-                })
-            })
-        );
-    }
-    Promise.all(promises).then((res) => {
-        promises = [];
-        for(r of res){
-            promises.push(new Promise((resolve) => {
-                resolve(r.json());
-            }));
-        }
-        Promise.all(promises)
-            .then(data => {
-                for (d of data){
-                    for(dev of d){
-                        const team = ts.find(t => t.id === dev.team);
-                        team.devs.push(dev);
-                    }
-                }
-                teams = ts;
-                init();
-            });        
-    })
+    teams = ts;
+    init();
 });
 const getTeam = () => {
     const tab = document.querySelector('.selected.tab');
