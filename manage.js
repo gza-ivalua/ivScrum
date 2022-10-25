@@ -11,43 +11,7 @@ fetch(`${apiUrl}/team`,
 })
 .then(r => r.json())
 .then(teams => {    
-    promises = [];
-    for(t of teams){
-        t.devs = [];
-        promises.push(
-            new Promise((resolve, reject) => {
-                fetch(`${apiUrl}/user/team/${t.id}?newUser=true`,
-                {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'        
-                    }
-                })
-                .then(res => resolve(res))
-                .catch(e => {
-                    reject(e);
-                })
-            })
-        );
-    }
-    Promise.all(promises).then((res) => {
-        promises = [];
-        for(r of res){
-            promises.push(new Promise((resolve) => {
-                resolve(r.json());
-            }));
-        }
-        Promise.all(promises)
-            .then(data => {
-                for (d of data){
-                    for(dev of d){
-                        const team = teams.find(t => t.id === dev.team);
-                        team.devs.push(dev);
-                    }
-                }
-                init(teams);
-            });        
-    })
+    init(teams);
 });
 const plusButtonClickHandler = (e) => {
     const target = e.target,
