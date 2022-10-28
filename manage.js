@@ -79,7 +79,7 @@ const buildSelect = (members) => {
     return select;
 }
 const init = async (teams) => {
-    const hiddenColumns = ['id', 'team'];
+    const hiddenColumns = ['id', 'team', 'teamId'];
     teams.forEach(async team => {
         const trelloMembers = await getTrelloMembers(team.trelloId);
         const selectInput  = buildSelect(trelloMembers);
