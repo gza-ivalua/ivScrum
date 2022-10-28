@@ -36,7 +36,7 @@ const fieldChangeHandler = (e) => {
     data.append('teamId', teamContainer.getAttribute('data-team'));
     const id = e.target.closest('tr').getAttribute('data-dev-id');
     if (id !== 'null'){
-        data.append('Id',id);
+        data.append('id',id);
     }
     const row = e.target.closest('tr');
     const fields = row.querySelectorAll('input, select');
