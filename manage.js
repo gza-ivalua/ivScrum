@@ -33,7 +33,7 @@ const fieldChangeHandler = (e) => {
     headers.append('Accept', '*/*');    
     const teamContainer = e.target.closest('.team');
     const data = new FormData();  
-    data.append('Team', teamContainer.getAttribute('data-team'));
+    data.append('teamId', teamContainer.getAttribute('data-team'));
     const id = e.target.closest('tr').getAttribute('data-dev-id');
     if (id !== 'null'){
         data.append('Id',id);
