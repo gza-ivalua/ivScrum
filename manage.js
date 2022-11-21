@@ -11,43 +11,7 @@ fetch(`${apiUrl}/team`,
 })
 .then(r => r.json())
 .then(teams => {    
-    promises = [];
-    for(t of teams){
-        t.devs = [];
-        promises.push(
-            new Promise((resolve, reject) => {
-                fetch(`${apiUrl}/user/team/${t.id}?newUser=true`,
-                {
-                    method: 'GET',
-                    headers: {
-                        'Accept': 'application/json'        
-                    }
-                })
-                .then(res => resolve(res))
-                .catch(e => {
-                    reject(e);
-                })
-            })
-        );
-    }
-    Promise.all(promises).then((res) => {
-        promises = [];
-        for(r of res){
-            promises.push(new Promise((resolve) => {
-                resolve(r.json());
-            }));
-        }
-        Promise.all(promises)
-            .then(data => {
-                for (d of data){
-                    for(dev of d){
-                        const team = teams.find(t => t.id === dev.team);
-                        team.devs.push(dev);
-                    }
-                }
-                init(teams);
-            });        
-    })
+    init(teams);
 });
 const plusButtonClickHandler = (e) => {
     const target = e.target,
@@ -69,10 +33,10 @@ const fieldChangeHandler = (e) => {
     headers.append('Accept', '*/*');    
     const teamContainer = e.target.closest('.team');
     const data = new FormData();  
-    data.append('Team', teamContainer.getAttribute('data-team'));
+    data.append('teamId', teamContainer.getAttribute('data-team'));
     const id = e.target.closest('tr').getAttribute('data-dev-id');
     if (id !== 'null'){
-        data.append('Id',id);
+        data.append('id',id);
     }
     const row = e.target.closest('tr');
     const fields = row.querySelectorAll('input, select');
@@ -115,7 +79,7 @@ const buildSelect = (members) => {
     return select;
 }
 const init = async (teams) => {
-    const hiddenColumns = ['id', 'team'];
+    const hiddenColumns = ['id', 'team', 'teamId'];
     teams.forEach(async team => {
         const trelloMembers = await getTrelloMembers(team.trelloId);
         const selectInput  = buildSelect(trelloMembers);
