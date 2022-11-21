@@ -8,13 +8,13 @@ const DccReminder = () => {
         txt.textContent = null;
         return;
     }
-    var a = new Date('24 december 2022')
-    undefined
-    var b = new Date()
-    undefined
+    // var a = new Date('24 december 2022')
+    var a = new Date('28 november 2022'); 
+    var b = new Date()    
     const diffTime = Math.abs(a - b);
     const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-    txt.textContent = `${diffDays} Days Before DCC Release...`;    
+    txt.textContent = `Anaïs, ${diffDays} Days Before End of Free Hosting Plan...`;    
+    // txt.textContent = `${diffDays} Days Before DCC Release...`;    
 }
 fetch(`${apiUrl}/team`, 
 {
