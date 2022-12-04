@@ -285,30 +285,35 @@ input{
     height: 0;
 }
 [data-color='yellow']{
-    color: yellow;
+    color: yellow !important;
 }
 [data-color='orange']{
-    color: orange;
+    color: orange !important;
 }
 [data-color='red']{
     color: rgb(231 0 0);
 }
 [data-color='green']{
-    color: #30c830;
+    color: #30c830 !important;
 }
 [data-color='purple']{
-    color: rgb(171, 33, 171);
+    color: rgb(171, 33, 171) !important;
 }
 [data-color='pink']{
-    color: rgb(255, 32, 244);
+    color: rgb(255, 32, 244) !important;
 }
 [data-color='blue']{
-    color: rgb(28 187 255);
+    color: rgb(28 187 255) !important;
 }
 [data-color='white']{
-    color: white;
+    color: white !important;
 }
 #cauchyStatusImg {
     width: 100px;
     height: 100px;
+}
+#txtDevCurrent{
+    color: #ff86e2;
+    font-family: monospace;
+    font-size: 1.4em;
 }

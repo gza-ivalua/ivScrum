@@ -1,0 +1,23 @@
+[
+    {
+        "name": "Components",
+        "trello": "",
+        "devs": [
+            { "trigram": "gza", "name": "Prof Pamplemousse", "trello": "" }
+        ]
+    },
+    {
+        "name": "Admin",
+        "trello": "",
+        "devs": [
+            { "trigram": "gza", "name": "Prof Pamplemousse", "trello": "" }
+        ]
+    },
+    {
+        "name": "Integration",
+        "trello": "",
+        "devs": [
+            { "trigram": "gza", "name": "Prof Pamplemousse", "trello": "" }
+        ]
+    }
+]

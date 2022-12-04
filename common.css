@@ -19,40 +19,40 @@
     src: url('./fonts/Magic_Retro.ttf') format('truetype');
 }
 [data-font="magic-retro"]{
-    font-family: "magic retro";
-    font-size: 60px;
+    font-family: "magic retro" !important;
+    font-size: 60px !important;
 }
 @font-face {
     font-family: "typewriter";
     src: url('./fonts/Typewriter-Black.ttf') format('truetype');
 }
 [data-font="typewriter"]{
-    font-family: "typewriter";
-    font-size: 50px;
+    font-family: "typewriter" !important;
+    font-size: 50px !important;
 }
 @font-face {
     font-family: "xantegrode signature";
     src: url('./fonts/Xantegrode_Signature.ttf') format('truetype');
 }
 [data-font="xantegrode-signature"]{
-    font-size: 50px;
-    font-family: "xantegrode signature";
+    font-size: 50px !important;
+    font-family: "xantegrode signature" !important;
 }
 @font-face {
     font-family: "romantice";
     src: url('./fonts/ROMANTICE.ttf');
 }
 [data-font="romantice"]{
-    font-size: 50px;
-    font-family: "romantice";
+    font-size: 50px !important;
+    font-family: "romantice" !important;
 }
 @font-face {
     font-family: "ancient";
     src: url('./fonts/Ancient Medium.ttf');
 }
 [data-font="ancient"]{
-    font-size: 70px;
-    font-family: "ancient";
+    font-size: 70px !important;
+    font-family: "ancient" !important;
 }
 html,
 body,

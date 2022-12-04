@@ -27,9 +27,9 @@ const initTabs = () => {
         const link = document.createElement('a');
         link.classList.add('link')
         link.href = 'manage.html';
-        const icon = document.createElement('i');
-        icon.classList.add('fa-solid', 'fa-pencil');        
-        link.append(icon);
+        // const icon = document.createElement('i');
+        // icon.classList.add('fa-solid', 'fa-pencil');        
+        // link.append(icon);
         tab.append(link);
         tabs.append(tab);
     });
@@ -146,3 +146,11 @@ const buildCards = async (userName, inProgress) => {
         container.appendChild(card);
     });
 }
+const initTrello = () => {
+    initTabs();
+    buildCards(null, true);
+    setTimeout(() => {
+        getUserImages();
+    }, 0); 
+}
+initTrello();

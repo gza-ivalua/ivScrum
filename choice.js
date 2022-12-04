@@ -1,6 +1,5 @@
-﻿const apiUrl = 'https://iv-scrum-api.herokuapp.com';
+﻿// const apiUrl = 'https://iv-scrum-api.herokuapp.com';
 // const apiUrl = 'https://localhost:5001'
-let teams = {};
 const DccReminder = () => {
     const CCtab = document.querySelector('.tab.selected[data-team-id="2b139375-8dda-40ae-94d9-c4d58713ac91"]');
     const txt = document.getElementById('txtDevCurrent');
@@ -16,18 +15,42 @@ const DccReminder = () => {
     txt.textContent = `Anaïs, ${diffDays} Days Before End of Free Hosting Plan...`;    
     // txt.textContent = `${diffDays} Days Before DCC Release...`;    
 }
-fetch(`${apiUrl}/team`, 
-{
-    method: 'GET',
-    headers: {
-        'Accept': 'application/json'        
+const teams = [
+    {
+        "name": "Components",
+        "id": "1",
+        "trelloId": "626f8c46f7f94f30b0bc78d4", // trello id
+        "devs": [
+            { "trello": "58480f8e35511bf7f82b961a", "trigram": "gza", "name": "Guy" },
+            { "trello": "5dd3f667cfe7b67ee3695081", "trigram": "anp", "name": "Poulette" },
+            { "trello": "61483b5e4b18e97915fa94b9", "trigram": "jgt", "name": "Jose" },                        
+            { "trello": "5770de0b7cc5c29c20e1c935", "trigram": "jla", "name": "Julien 👑" },
+            { "trello": "571f321e3d0918a2cde3a2a8", "trigram": "mdd", "name": "Micka" },     
+            { "trello": "5c7fc4f442826f14c0a7e497", "trigram": "rle", "name": "Rémi" },                                                            
+            { "trello": "62a73ac1eeaf9f117353911a", "trigram": "saf", "name": "Safi" },                                                                                    
+            { "trello": "615488db3da53285d95402dc", "trigram": "sci", "name": "Samuel" },                                                                                    
+            { "trello": "59b02122d3bc2d40e1a1ecb8", "trigram": "ygr", "name": "Yannou" },                                                                                  
+            { "trello": "61c205b702268157e004b923", "trigram": "jkl", "name": "Julien" },                                                                                                                        
+            { "trello": "59b2635100bc9d3ead969dc9", "trigram": "mbo", "name": "Chat" }
+        ]
+    },
+    {
+        "name": "Admin",
+        "id": "2",
+        "trelloId": "626f8c46f7f94f30b0bc78d4",
+        "devs": [
+            { "trigram": "gza", "name": "Prof Pamplemousse", "trello": "" }
+        ]
+    },
+    {
+        "name": "Integration",
+        "id": "2",
+        "trelloId": "626f8c46f7f94f30b0bc78d4",
+        "devs": [
+            { "trigram": "gza", "name": "Prof Pamplemousse", "trello": "" }
+        ]
     }
-})
-.then(r => r.json())
-.then(ts => {    
-    teams = ts;
-    init();
-});
+]
 const getTeam = () => {
     const tab = document.querySelector('.selected.tab');
     if (!tab){
@@ -52,10 +75,11 @@ function loadJSON(callback) {
 const getDevList = () => {
     const items = document.querySelectorAll('.dev.column li');
     const res = [...items].reduce((prev, cur, i, arr) => {
-        const input = cur.querySelector('input');
-        if (input.checked){
-            prev.push(input.value);
-        }
+        const input = cur.querySelector('.name-label');
+        prev.push(input.getAttribute('for'));
+        // if (input.checked){
+        //     prev.push(input.value);
+        // }
         return prev;
     }, []);
     return res;
@@ -84,7 +108,7 @@ const getDevList = () => {
             chk.addEventListener('change', chkChangeHandler)
             li.append(div);
             div.append(label);
-            li.append(chk);
+            // li.append(chk);
             ul.append(li);
         })
     });    
@@ -440,9 +464,20 @@ const pickDev = () => {
     updateDevListsIfRequired();
     // No remaining dev to pick -> we do nothing
     if (remainingDevs.length === 0) {
+        const btn = document.getElementById('btnPick');
+        if (btn.getAttribute('fini') === 'finito'){
+            const txtDevCurrent = document.getElementById('txtDevCurrent');
+            txtDevCurrent.textContent = null;
+            const img = document.createElement('img');
+            img.src = './assets/icons/fuck.png';
+            img.style.width = '150px';
+            txtDevCurrent.after(img);
+            btn.disabled = true;
+            return;
+        }
+        btn.setAttribute('fini', 'finito')
         stopDevTimer(pickedDevs[pickedDevs.length - 1]);
-        stopTimer = true;
-        addMessage('No remaining dev -> please reset the picker before picking another one!', 'warning');
+        stopTimer = true;        
         return;
     }
     // If wheel is rotating, waiting for completion
@@ -565,18 +600,21 @@ const initCauchyStatus = () => {
 /**
  * Start point of the application.
  */
-const init = () => {             
+const init = () => {     
+    myminute = jQuery(".clock .flipper:nth-child(1) div:not(.new) .text");
+    mysecond = jQuery(".clock .flipper:nth-child(2) div:not(.new) .text");         
     initDevList();
-    initTabs();             
+    // initTabs();             
     resetPicker();
     initEvents();
-    buildCards(null, true);
-    setTimeout(() => {
-        getUserImages();
-    }, 0); 
-    setTimeout(() => {
-        initCauchyStatus();
-    }, 0); 
+    // buildCards(null, true);
+    // setTimeout(() => {
+    //     getUserImages();
+    // }, 0); 
+    // setTimeout(() => {
+    //     initCauchyStatus();
+    // }, 0); 
     DccReminder();
 }
+init();
 
