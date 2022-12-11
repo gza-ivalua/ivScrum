@@ -44,13 +44,21 @@ const teams = [
     },
     {
         "name": "Integration",
-        "id": "2",
-        "trelloId": "626f8c46f7f94f30b0bc78d4",
+        "id": "3",
+        "trelloId": "6180fec4c1f0071005db2e8c",
         "devs": [
-            { "trigram": "gza", "name": "Prof Pamplemousse", "trello": "" }
+            { "trigram": "afo", "name": "Antonin", "trello": "617a5c4c59490938673593f0" },
+            { "trigram": "cda", "name": "Christophe", "trello": "5721daa1b7364971e546197a" },
+            { "trigram": "mil", "name": "Michael", "trello": "61828a4b9c03d460e173385e" },
+            { "trigram": "nmi", "name": "Nicolas", "trello": "52933ef71af028a5410087b3" },            
+            { "trigram": "pst", "name": "Philippe", "trello": "57357594b69d9fd7e3cf8037" },            
+            { "trigram": "skf", "name": "Salim", "trello": "62dfa8865f56db0ad39af728" },                                   
+            { "trigram": "ksi", "name": "Karine", "trello": "633d8f1ea46007042dc1269c" },            
+
         ]
     }
 ]
+
 const getTeam = () => {
     const tab = document.querySelector('.selected.tab');
     if (!tab){
