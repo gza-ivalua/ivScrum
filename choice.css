@@ -67,6 +67,7 @@ input{
     padding: 20px 5px;
     text-decoration: none;
     color: white;
+    word-break: break-word;
 }
 .card .status {
     color: #dadada;
@@ -77,6 +78,7 @@ input{
     font-size: .8em;;
     padding: 0 10px;
     overflow: hidden;
+    
 }
 
 .row > div{
