@@ -39,7 +39,15 @@ const teams = [
         "id": "2",
         "trelloId": "626f8c46f7f94f30b0bc78d4",
         "devs": [
-            { "trigram": "gza", "name": "Prof Pamplemousse", "trello": "" }
+            { "trigram": "tdu", "name": "Tu", "trello": "5ab8f1d5fb04fd4f986bba07" },
+            { "trigram": "msb", "name": "Mouslim", "trello": "6135e6424cd2f5761c2fff14" },
+            { "trigram": "dmz", "name": "David", "trello": "633ae6157b366c03dbca063d" },
+            { "trigram": "nal", "name": "Nicolas", "trello": "6386161990be280583161182" },
+            { "trigram": "ngt", "name": "Nicolas", "trello": "6321c1815ad59f011622302f" },
+            { "trigram": "ohx", "name": "Oren", "trello": "6131f0762994ad1f6be6ff54" },
+            { "trigram": "odc", "name": "Olivier", "trello": "613239e4c739e46d0ed29080" },
+            { "trigram": "thm", "name": "Thibaut", "trello": "6131f0769094ea72b987f32b" },
+            { "trigram": "tsn", "name": "Tania", "trello": "62c6e09038830279d6e0e389" }
         ]
     },
     {
@@ -59,7 +67,6 @@ const teams = [
         ]
     }
 ]
-
 const getTeam = () => {
     const tab = document.querySelector('.selected.tab');
     if (!tab){
