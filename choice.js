@@ -396,7 +396,6 @@ let colorIndex = 0;
 const fonts = ['ancient', 'romantice', 'magic-retro', 'xantegrode-signature', 'typewriter']
 const colors = ['green', 'yellow', 'orange', 'red', 'pink', 'blue', 'white'];
 const setDevAsCurrent = dev => {
-    buildCards(dev);
     if(pickedDevs.length){
         stopDevTimer(pickedDevs[pickedDevs.length - 1]);
     }
@@ -567,14 +566,7 @@ const resetPicker = () => {
     pickedDevs = [];
     document.title = `Scrum dev picker`;
     // redrawAll(remainingDevs);
-    const cards = document.querySelector('#cards');
-    if(cards){
-        cards.innerHTML = '';
-    } 
     setTime('15', '0');
-    if (typeof trelloCards !== 'undefined') {
-        trelloCards = [];        
-    } 
     if (typeof lists !== 'undefined') {        
         lists = [];
     } 
@@ -622,18 +614,9 @@ const initCauchyStatus = () => {
 const init = () => {     
     myminute = jQuery(".clock .flipper:nth-child(1) div:not(.new) .text");
     mysecond = jQuery(".clock .flipper:nth-child(2) div:not(.new) .text");         
-    initDevList();
-    // initTabs();             
+    initDevList();        
     resetPicker();
     initEvents();
-    // buildCards(null, true);
-    // setTimeout(() => {
-    //     getUserImages();
-    // }, 0); 
-    // setTimeout(() => {
-    //     initCauchyStatus();
-    // }, 0); 
-    DccReminder();
 }
 init();
 
