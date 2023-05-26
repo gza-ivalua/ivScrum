@@ -16,22 +16,21 @@ const DccReminder = () => {
     // txt.textContent = `${diffDays} Days Before DCC Release...`;    
 }
 const teams = [
-    {
-        "name": "Components",
-        "id": "1",
-        "trelloId": "626f8c46f7f94f30b0bc78d4", // trello id
+     {
+        "name": "Integration",
+        "id": "3",
+        "trelloId": "6180fec4c1f0071005db2e8c",
         "devs": [
-            { "trello": "58480f8e35511bf7f82b961a", "trigram": "gza", "name": "Guy" },
-            { "trello": "5dd3f667cfe7b67ee3695081", "trigram": "anp", "name": "Poulette" },
-            { "trello": "61483b5e4b18e97915fa94b9", "trigram": "jgt", "name": "Jose" },                        
-            { "trello": "5770de0b7cc5c29c20e1c935", "trigram": "jla", "name": "Julien 👑" },
-            { "trello": "571f321e3d0918a2cde3a2a8", "trigram": "mdd", "name": "Micka" },     
-            { "trello": "5c7fc4f442826f14c0a7e497", "trigram": "rle", "name": "Rémi" },                                                            
-            { "trello": "62a73ac1eeaf9f117353911a", "trigram": "saf", "name": "Safi" },                                                                                    
-            { "trello": "615488db3da53285d95402dc", "trigram": "sci", "name": "Samuel" },                                                                                    
-            { "trello": "59b02122d3bc2d40e1a1ecb8", "trigram": "ygr", "name": "Yannou" },                                                                                  
-            { "trello": "61c205b702268157e004b923", "trigram": "jkl", "name": "Julien" },                                                                                                                        
-            { "trello": "59b2635100bc9d3ead969dc9", "trigram": "mbo", "name": "Chat" }
+            { "trigram": "afo", "name": "Antonin", "trello": "617a5c4c59490938673593f0" },
+            { "trigram": "cda", "name": "Christophe", "trello": "5721daa1b7364971e546197a" },
+            { "trigram": "mil", "name": "Michael", "trello": "61828a4b9c03d460e173385e" },
+            { "trigram": "nmi", "name": "Nicolas", "trello": "52933ef71af028a5410087b3" },            
+            { "trigram": "pst", "name": "Philippe", "trello": "57357594b69d9fd7e3cf8037" },            
+            { "trigram": "skf", "name": "Salim", "trello": "62dfa8865f56db0ad39af728" },                                   
+            { "trigram": "ksi", "name": "Karine", "trello": "633d8f1ea46007042dc1269c" },            
+            { "trigram": "vml", "name": "Vincent", "trello": "6182a222015f9d30b7ae7620" },            
+            { "trigram": "cde", "name": "Christophe", "trello": "6182a222015f9d30b7ae7620" }
+
         ]
     },
     {
@@ -49,23 +48,6 @@ const teams = [
             { "trigram": "thm", "name": "Thibaut", "trello": "6131f0769094ea72b987f32b" },
             { "trigram": "tsn", "name": "Tania", "trello": "62c6e09038830279d6e0e389" },
             { "trigram": "aud", "name": "Aurélie", "trello": "5a69977d817b52ae3f4ab7b1" }
-        ]
-    },
-    {
-        "name": "Integration",
-        "id": "3",
-        "trelloId": "6180fec4c1f0071005db2e8c",
-        "devs": [
-            { "trigram": "afo", "name": "Antonin", "trello": "617a5c4c59490938673593f0" },
-            { "trigram": "cda", "name": "Christophe", "trello": "5721daa1b7364971e546197a" },
-            { "trigram": "mil", "name": "Michael", "trello": "61828a4b9c03d460e173385e" },
-            { "trigram": "nmi", "name": "Nicolas", "trello": "52933ef71af028a5410087b3" },            
-            { "trigram": "pst", "name": "Philippe", "trello": "57357594b69d9fd7e3cf8037" },            
-            { "trigram": "skf", "name": "Salim", "trello": "62dfa8865f56db0ad39af728" },                                   
-            { "trigram": "ksi", "name": "Karine", "trello": "633d8f1ea46007042dc1269c" },            
-            { "trigram": "vml", "name": "Vincent", "trello": "6182a222015f9d30b7ae7620" },            
-            { "trigram": "cde", "name": "Christophe", "trello": "6182a222015f9d30b7ae7620" }
-
         ]
     }
 ]
