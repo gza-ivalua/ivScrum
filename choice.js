@@ -15,25 +15,42 @@ const DccReminder = () => {
     txt.textContent = `Anaïs, ${diffDays} Days Before End of Free Hosting Plan...`;    
     // txt.textContent = `${diffDays} Days Before DCC Release...`;    
 }
+
 const teams = [
     {
         "name": "Admin",
         "id": "2",
         "trelloId": "626f8c46f7f94f30b0bc78d4",
-        "devs": [
-            { "trigram": "tdu", "name": "Tu", "trello": "5ab8f1d5fb04fd4f986bba07" },
-            { "trigram": "msb", "name": "Mouslim", "trello": "6135e6424cd2f5761c2fff14" },
-            { "trigram": "dmz", "name": "David", "trello": "633ae6157b366c03dbca063d" },
-            { "trigram": "nal", "name": "Nicolas", "trello": "6386161990be280583161182" },
-            { "trigram": "ngt", "name": "Nicolas", "trello": "6321c1815ad59f011622302f" },
-            { "trigram": "ohx", "name": "Oren", "trello": "6131f0762994ad1f6be6ff54" },
-            { "trigram": "odc", "name": "Olivier", "trello": "613239e4c739e46d0ed29080" },
-            { "trigram": "thm", "name": "Thibaut", "trello": "6131f0769094ea72b987f32b" },
-            { "trigram": "tsn", "name": "Tania", "trello": "62c6e09038830279d6e0e389" },
-            { "trigram": "aud", "name": "Aurélie", "trello": "5a69977d817b52ae3f4ab7b1" }
-        ]
+        "devs": 
+        {
+            'tdu': {'trigram' : 'tdu', 'name': 'Tu', 'present' : getBoolFromStorage('tdu'), 'tab' : null, 'done' : false, 'time' : 0 },
+            'dmz': {'trigram' : 'dmz', 'name': 'David', 'present' : getBoolFromStorage('dmz'), 'tab' : null, 'done' : false, 'time' : 0 },
+            'nal': {'trigram' : 'nal', 'name': 'Nicolas (A)', 'present' : getBoolFromStorage('nal'), 'tab' : null, 'done' : false, 'time' : 0 },
+            'ngt': {'trigram' : 'ngt', 'name': 'Nicolas (G)', 'present' : getBoolFromStorage('ngt'), 'tab' : null, 'done' : false, 'time' : 0 },
+            'ohx': {'trigram' : 'ohx', 'name': 'Oren', 'present' : getBoolFromStorage('ohx'), 'tab' : null, 'done' : false, 'time' : 0 },
+            'odc': {'trigram' : 'odc', 'name': 'Olivier', 'present' : getBoolFromStorage('odc'), 'tab' : null, 'done' : false, 'time' : 0 },
+            'thm': {'trigram' : 'thm', 'name': 'Thibaut', 'present' : getBoolFromStorage('thm'), 'tab' : null, 'done' : false, 'time' : 0 },
+            'tsn': {'trigram' : 'tsn', 'name': 'Tania', 'present' : getBoolFromStorage('tsn'), 'tab' : null, 'done' : false, 'time' : 0 },
+            'aud': {'trigram' : 'aud', 'name': 'Aurélie', 'present' : getBoolFromStorage('aud'), 'tab' : null, 'done' : false, 'time' : 0 }
+        }
+        
     }
 ]
+
+function getBoolFromStorage(key) {
+    var it = localStorage.getItem(key);
+    if (it === null){
+        return true;
+    }
+    return localStorage.getItem(key) === 'true';
+}
+
+function setBoolToStorage(key, value) {
+    localStorage.setItem(key, value);
+}
+
+var currentTeam = null;
+var selectedDev = null;
 const getTeam = () => {
     const tab = document.querySelector('.selected.tab');
     if (!tab){
@@ -42,9 +59,6 @@ const getTeam = () => {
     const id = tab.getAttribute('data-trello-id');
     const team = teams.find(e => e.id === id);
     return team.name;
-}
-const getStorageItem = (key) => {
-    return localStorage.getItem(key);
 }
 function loadJSON(callback) {   
     var data = teams;
@@ -72,43 +86,48 @@ const getDevList = () => {
     ul.innerHTML = '';    
     loadJSON((data) => { 
         const devs = data.find(e => e.name === getTeam()).devs;
-        devs.forEach(e => { 
+        currentTeam = devs;
+        Object.entries(devs).forEach(([trigram, e]) => { 
             const li = document.createElement('li');
             li.setAttribute('data-user-id', e.trello);            
             const div = document.createElement('div');
             div.classList.add('label');
-            div.setAttribute('id', e.trigram);
+            div.setAttribute('id', trigram);
             const label = document.createElement('label');
             label.classList.add('name-label');
-            label.setAttribute('for', e.trigram);
+            label.setAttribute('for', trigram);
             label.textContent = e.name;
             const chk = document.createElement('input');
-            chk.setAttribute('value', e.trigram);
-            chk.setAttribute('id', e.trigram);
-            chk.setAttribute('data-user', e.id);
+            chk.setAttribute('value', trigram);
+            chk.setAttribute('id', trigram);
             chk.setAttribute('type', 'checkbox');
-            chk.checked = e.here;   
+            chk.checked = getBoolFromStorage(trigram);   
             chk.addEventListener('change', chkChangeHandler)
+            
             li.append(div);
             div.append(label);
-            // li.append(chk);
+            li.append(chk);
             ul.append(li);
-        })
+            if (!chk.checked){
+                li.classList.add('off');
+            }
+            currentTeam[trigram].tab = li;
+        });
     });    
    }
 const chkChangeHandler = (e) => {
     const target = e.target,
-    id = target.getAttribute('data-user');
-    const data = new FormData();
-    data.append('here', target.checked);
-    const myHeaders = new Headers();
-    myHeaders.set('Accept', 'application/json'); 
-    fetch(`${apiUrl}/user/${id}/here`, 
-    {
-        method: 'POST',
-        headers: myHeaders,
-        body: data
-    });
+    id = target.getAttribute('value');
+    currentTeam[id].present = target.checked;
+    var tab = currentTeam[id].tab;
+    if (target.checked){
+        tab.classList.remove('off');
+        setBoolToStorage(id, 'true');
+    }
+    else {
+        tab.classList.add('off');
+        setBoolToStorage(id, 'false');
+    }
 }
 //#region Constants
 const SQRT_PI = Math.sqrt(Math.PI);
@@ -118,8 +137,6 @@ const COLORS = ['#6867AC', '#A267AC', '#CE7BB0', '#FFBCD1', '#705089', '#A267AC'
 //#region Global variables
 let pickerRadius;
 let devList = [];
-let remainingDevs = [];
-let pickedDevs = [];
 let $canvas;
 let ctx;
 let startTimestamp;
@@ -319,82 +336,21 @@ const redrawAll = (devList, deltaStartAngle = 0) => {
     drawPickerRule();
 }
 
-/**
- * Rotate the wheel.
- * @param {number} timestamp Current timestamp (provided by rAF).
- * @param {*} initialSpeed Initial wheel's rotating speed.
- * @param {*} deceleration Wheel's deceleration.
- */
-const rotateWheel = (timestamp, initialSpeed, deceleration) => {
-    if (typeof startTimestamp === 'undefined')
-        startTimestamp = timestamp;
-
-    const elapsedTime = (timestamp - startTimestamp) / 1000;
-    const sqrtDeceleration = Math.sqrt(deceleration);
-    const offsetAngle = initialSpeed * SQRT_PI * erf(sqrtDeceleration * elapsedTime) / (2 * sqrtDeceleration);
-
-    // Refresh the diagram at the new angle + the picker
-    redrawAll(remainingDevs, offsetAngle);
-
-    const currentSpeed = initialSpeed * Math.exp(-deceleration * elapsedTime * elapsedTime);
-
-    // If the wheel is about stopped, we exit
-    if (currentSpeed < 0.2) {
-        startTimestamp = undefined;
-
-        const rotatedAngleNormalized = offsetAngle % (2 * Math.PI);
-
-        const iDev = remainingDevs.length - 1 - Math.floor(Math.abs(rotatedAngleNormalized * remainingDevs.length / (2 * Math.PI)));
-        setDevAsCurrent(remainingDevs[iDev]);
-
-        return;
-    }
-
-    window.requestAnimationFrame(timestamp => rotateWheel(timestamp, initialSpeed, deceleration));
-}
-//#endregion
-
 
 //#region Dev utilities
 let colorIndex = 0;
 const fonts = ['ancient', 'romantice', 'magic-retro', 'xantegrode-signature', 'typewriter']
 const colors = ['green', 'yellow', 'orange', 'red', 'pink', 'blue', 'white'];
 const setDevAsCurrent = dev => {
-    if(pickedDevs.length){
-        stopDevTimer(pickedDevs[pickedDevs.length - 1]);
-    }
     const txtDevCurrent = document.getElementById('txtDevCurrent');
-    txtDevCurrent.textContent = `${getDevName(dev)}`;
-    const iDev = remainingDevs.indexOf(dev);
-    remainingDevs.splice(iDev, 1);
-    pickedDevs.push(dev);
-    startDevTimer(dev);
-    document.title = `${dev} - Scrum picker`;
+    explodeParticles(dev.tab, 'white');
+    txtDevCurrent.textContent = `${getDevName(dev.trigram)}`;
+    currentTeam[dev.trigram].done = true;
+    selectedDev = dev;
+    startDevTimer(dev.trigram);
+    document.title = `${dev.trigram} - Scrum picker`;
 }
 
-const updateDevListsIfRequired = () => {
-    const newDevList = getDevList();
-    const result = compareArrays(devList, newDevList);
-
-    // If they are identical, that's ok, we continue
-    if (result.areIdentical)
-        return;
-
-    // Else, we first update the current dev list with the new one.
-    replaceArrayInplace(devList, newDevList);
-
-    // Then we update the remainingDevs list
-    for (const added of result.addedItems)
-        remainingDevs.push(added);
-
-    for (const removed of result.removedItems) {
-        const idx = remainingDevs.indexOf(removed);
-        if (idx > -1)
-            remainingDevs.splice(idx, 1);
-    }
-
-    addMessage('List correctly updated', 'success');
-}
 var countdown;
 stopTimer = false;
 const startCountDown =() => {
@@ -422,10 +378,14 @@ const startDevTimer = (dev) => {
     devSpeakingTime[dev] = new Date();
 }
 const stopDevTimer = (dev) => {
+    if (dev == null) {
+        return;
+    }
     var endDate = new Date();
-    var distance = endDate.getTime() - devSpeakingTime[dev].getTime();
-    var container = document.querySelector(`.label[id="${dev}"]`);   
+    var distance = endDate.getTime() - devSpeakingTime[dev.trigram].getTime();
+    var container = document.querySelector(`.label[id="${dev.trigram}"]`);   
     var timeDiv = document.createElement('span');  
+    currentTeam[dev.trigram].time = distance;
     timeDiv.classList.add('time-speaking'); 
     timeDiv.appendChild(document.createTextNode(dateTostring(distance)));
     container.after(timeDiv)
@@ -435,17 +395,37 @@ const dateTostring = (distance) => {
     var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((distance % (1000 * 60)) / 1000);
     // Display the result in the element with id="demo"
-    return  minutes + "m" + seconds + "s ";
+    let txt = '';
+    if (minutes > 0){
+        txt = `${minutes}m `;
+    }
+    txt += `${seconds}s`;
+    return txt;
 }
 /**
  * Run the wheel and pick a developer.
  */
+var isPicking = false;
 const pickDev = () => {
+    if (isPicking){
+        return;
+    }
+    isPicking = true;
     stopTimer = false;
-    // First, check if the list has been changed since the last run
-    updateDevListsIfRequired();
-    // No remaining dev to pick -> we do nothing
-    if (remainingDevs.length === 0) {
+    //generate list of dev to pick, who are presend and not done
+    let devsToPick = Object.entries(currentTeam).filter(e => e[1].present && !e[1].done).map(v => v[1]);
+    let allDevs = Object.entries(currentTeam).filter(e => e[1].present).map(v => v[1]);
+    
+    //si aucun dev n'as commencé, starCountDown
+    if (devsToPick.length === allDevs.length){
+        startCountDown();
+    }
+ 
+    
+    if (devsToPick.length === 0) {
+        
+        rewardUser();
+    
         const btn = document.getElementById('btnPick');
         if (btn.getAttribute('fini') === 'finito'){
             const txtDevCurrent = document.getElementById('txtDevCurrent');
@@ -457,54 +437,107 @@ const pickDev = () => {
             btn.disabled = true;
             return;
         }
+        else {
+            stopDevTimer(selectedDev);
+        }
         btn.setAttribute('fini', 'finito')
-        stopDevTimer(pickedDevs[pickedDevs.length - 1]);
+        
+        isPicking = false;
         stopTimer = true;        
         return;
-    }
-    // If wheel is rotating, waiting for completion
-    if (typeof startTimestamp !== 'undefined') {
-        addMessage('The wheel is always rotating, please wait...', 'warning');
-        return;
-    }
-    if (pickedDevs.length === 0){
-        startCountDown();
-    }        
-    if (remainingDevs.length === 1) {
-        // redrawAll(remainingDevs, Math.PI);
-        setDevAsCurrent(remainingDevs[0]);
+    }     
+    stopDevTimer(selectedDev);
+    
+    if (devsToPick.length === 1) {
+        isPicking = false;
+        updateCurrentDev(devsToPick[0]);
+        setDevAsCurrent(devsToPick[0]);
         return;
     }    
-    let stop = false;
-    setTimeout(() => {
-        stop = true;
-    }, 3500);
-    let i = 0;      
-    const pickDevInterval = setInterval(() => {
-        document.querySelectorAll('.dev.column li.selected').forEach(li => {
-            li.classList.remove('selected')
-        });
-        const fi = getRandomInt(fonts.length);
-        const f = fonts[fi];        
-        const txtDevCurrent = document.getElementById('txtDevCurrent');
-        txtDevCurrent.setAttribute('data-font', f);
-        txtDevCurrent.textContent = toPascalCase(remainingDevs[i]);
-        document.getElementById(remainingDevs[i]).closest('li').classList.add('selected');
-        if (stop){                        
-            document.getElementById(remainingDevs[i]).closest('li').classList.add('selected');
-            setDevAsCurrent(remainingDevs[i]);            
-            clearInterval(pickDevInterval);            
-        }
-        else {                                                                        
+    let isStopped = false;
+    const t = allDevs.length * 3
+    const totalSteps = Math.floor(rand(t,t + allDevs.length));
+    let currentStep = 0;
+    const pointMap = generatePointMap(totalSteps, 3500)
+    let devIndex = 0;
+    let colorIndex = 0;
+    const pickDevInterval = () => {
+        if (isStopped) {
+            isPicking = false;
+            updateCurrentDev(devsToPick[devIndex]);
+            setDevAsCurrent(devsToPick[devIndex]);
+        } else {
+            devIndex = (devIndex + 1) % devsToPick.length;
+            updateCurrentDev(devsToPick[devIndex]);
+
+            const txtDevCurrent = document.getElementById('txtDevCurrent');
             txtDevCurrent.setAttribute('data-color', colors[colorIndex]);
-            colorIndex++;
-            if (colorIndex === colors.length){
-                colorIndex = 0;
-            }
-            i = getRandomInt(remainingDevs.length);
+            colorIndex = (colorIndex + 1) % colors.length; 
+            
+            const prevTime = pointMap[currentStep];
+            const nextTime = pointMap[currentStep + 1];
+            const interval = prevTime - nextTime;
+            currentStep++;
+            isStopped = currentStep === totalSteps-1;
+
+            setTimeout(pickDevInterval, interval);
         }
-    }, 200);    
+    };
+    pickDevInterval();
+
 }
+
+function easeOutQuad(t) {
+    return t * (2 - t);
+}
+
+function rewardUser() {
+    //get the least speaking dev
+    let leastSpeakingDev = null;
+    let leastSpeakingTime = Number.MAX_VALUE;
+    Object.entries(currentTeam).forEach(([trigram, dev]) => {
+        if (dev.time < leastSpeakingTime){
+            leastSpeakingTime = dev.time;
+            leastSpeakingDev = dev;
+        }
+    });
+
+    //reward the dev
+    leastSpeakingDev.tab.classList.add('winner');
+}
+
+function generatePointMap(count, length) {
+    const pointMap = [];
+    i = count;
+
+    while (i > 0) {
+        let x = i / count;
+        let y = easeOutQuad(x) * length;
+        pointMap.push(y);
+        i--;
+    }
+    return pointMap;
+
+}
+
+// Utility function to clear the 'selected' class from all developer list items
+function clearSelectedDevs() {
+    document.querySelectorAll('.dev.column li.selected').forEach(li => {
+        li.classList.remove('selected');
+    });
+}
+// Function to update the UI for the current developer
+function updateCurrentDev(dev) {
+    const txtDevCurrent = document.getElementById('txtDevCurrent');
+    const fontIndex = getRandomInt(fonts.length);
+    const font = fonts[fontIndex];
+
+    clearSelectedDevs();
+    txtDevCurrent.setAttribute('data-font', font);
+    txtDevCurrent.textContent = dev.trigram;
+    dev.tab.classList.add('selected');
+}
+
 const toPascalCase = (sentence) => sentence
    .split(' ')
    .map(word => word[0]
@@ -528,6 +561,9 @@ const resetPicker = () => {
     devList = getDevList();
     remainingDevs = [...devList];
     pickedDevs = [];
+
+    currentTeam = teams[0].devs;
+    initDevList();
     document.title = `Scrum dev picker`;
     // redrawAll(remainingDevs);
     setTime('15', '0');
@@ -549,8 +585,22 @@ const captureKey = evt => {
  */
 const initEvents = () => {
     $('btnPick').addEventListener('click', pickDev);
-    $('btnReset').addEventListener('click', resetPicker);    
+    $('btnReset').addEventListener('click', () => document.location.reload());    
+    $('btnAdd').addEventListener('click', addDev);
     document.addEventListener('keypress', captureKey);
+}
+
+function addDev() { 
+    let name=prompt("Who are we adding?");
+    if (name === null){
+        return;
+    }
+    name = name.toLowerCase();
+    if (name.length === 0){
+        return;
+    }
+    currentTeam[name] = {'trigram' : name, 'name': toPascalCase(name), 'present' : true, 'tab' : null, 'done' : false, 'time' : 0 };
+    initDevList();
 }
 
 const initCauchyStatus = () => {
