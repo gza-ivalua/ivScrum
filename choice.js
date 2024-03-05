@@ -497,7 +497,7 @@ function rewardUser() {
     let leastSpeakingDev = null;
     let leastSpeakingTime = Number.MAX_VALUE;
     Object.entries(currentTeam).forEach(([trigram, dev]) => {
-        if (dev.time < leastSpeakingTime){
+        if (dev.time < leastSpeakingTime && dev.present){
             leastSpeakingTime = dev.time;
             leastSpeakingDev = dev;
         }
