@@ -31,7 +31,8 @@ const teams = [
             'odc': {'trigram' : 'odc', 'name': 'Olivier', 'present' : getBoolFromStorage('odc'), 'tab' : null, 'done' : false, 'time' : 0 },
             'thm': {'trigram' : 'thm', 'name': 'Thibaut', 'present' : getBoolFromStorage('thm'), 'tab' : null, 'done' : false, 'time' : 0 },
             'tsn': {'trigram' : 'tsn', 'name': 'Tania', 'present' : getBoolFromStorage('tsn'), 'tab' : null, 'done' : false, 'time' : 0 },
-            'aud': {'trigram' : 'aud', 'name': 'Aurélie', 'present' : getBoolFromStorage('aud'), 'tab' : null, 'done' : false, 'time' : 0 }
+            'aud': {'trigram' : 'aud', 'name': 'Aurélie', 'present' : getBoolFromStorage('aud'), 'tab' : null, 'done' : false, 'time' : 0 },
+            'mta': {'trigram' : 'mta', 'name': 'Messipsa', 'present' : getBoolFromStorage('mta'), 'tab' : null, 'done' : false, 'time' : 0 }
         }
         
     }
@@ -496,7 +497,7 @@ function rewardUser() {
     let leastSpeakingDev = null;
     let leastSpeakingTime = Number.MAX_VALUE;
     Object.entries(currentTeam).forEach(([trigram, dev]) => {
-        if (dev.time < leastSpeakingTime){
+        if (dev.time < leastSpeakingTime && dev.present){
             leastSpeakingTime = dev.time;
             leastSpeakingDev = dev;
         }
