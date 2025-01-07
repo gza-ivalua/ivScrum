@@ -9,10 +9,10 @@
 @font-face {
     font-family: "dotted";
     src: url(dotted.ttf) format('truetype');
-   }
+}
 @font-face {
     font-family: "LED Dot-Matrix";
-    src: url('LED Dot-Matrix.ttf') format('truetype');
+    src: url('./fonts/LED Dot-Matrix.ttf') format('truetype');
 }
 @font-face {
     font-family: "magic retro";
@@ -54,9 +54,7 @@
     font-size: 70px !important;
     font-family: "ancient" !important;
 }
-html,
-body,
-#container{
+html, body, #container{
     height: 100%;
     width: 100%;
     margin: 0;    

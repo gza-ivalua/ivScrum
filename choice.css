@@ -1,4 +1,13 @@
-﻿
+﻿@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Baloo+2:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Fredoka&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Lobster&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Pacifico&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Bangers&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Concert+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Chewy&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Shadows+Into+Light&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Caveat:wght@400;700&display=swap');
 #player{
     display: none;
 }
@@ -107,7 +116,7 @@ input{
     margin-top: 80px;
     display: flex;
     justify-content: space-around;
-    width: 180px;
+    /* width: 180px; */
 }
 
 #currentDevInfo {
@@ -119,7 +128,8 @@ input{
 }
 
 #currentDevInfo>span {
-    padding: 0 1em;
+    padding: 0 .1em;
+    font-size: 3em;
 }
 
 #txtDevDone {

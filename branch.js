@@ -79,7 +79,7 @@ const getBranches = () => {
                 branch.setAttribute('id', b.id);
                 branch.setAttribute('data-branch-code', `buyer_V8_${b.version}_D351364_branch`);
                 const version = document.createElement('a');
-                version.setAttribute('href', `https://project.ivalua.com/page/chg/branch_manage?branch_code=buyer_V8_${b.version}_D351364_branch`)
+                version.setAttribute('href', `https://project.ivalua.com/page/chg/branch_manage?branch_code=buyer_V8_${b.version}_D1108888_branch`)
                 version.classList.add('version')
                 version.setAttribute('target', 'blank')
                 branch.append(version);

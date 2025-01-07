@@ -1,37 +1,21 @@
-﻿// const apiUrl = 'https://iv-scrum-api.herokuapp.com';
-// const apiUrl = 'https://localhost:5001'
-const DccReminder = () => {
-    const CCtab = document.querySelector('.tab.selected[data-team-id="2b139375-8dda-40ae-94d9-c4d58713ac91"]');
-    const txt = document.getElementById('txtDevCurrent');
-    if (!CCtab){
-        txt.textContent = null;
-        return;
-    }
-    // var a = new Date('24 december 2022')
-    var a = new Date('28 november 2022'); 
-    var b = new Date()    
-    const diffTime = Math.abs(a - b);
-    const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24)); 
-    txt.textContent = `Anaïs, ${diffDays} Days Before End of Free Hosting Plan...`;    
-    // txt.textContent = `${diffDays} Days Before DCC Release...`;    
-}
-
-const teams = [
+﻿const teams = [
     {
         "name": "Admin",
         "id": "2",
         "trelloId": "626f8c46f7f94f30b0bc78d4",
         "devs": 
         {
-            'tdu': {'trigram' : 'tdu', 'name': 'Tu', 'present' : getBoolFromStorage('tdu'), 'tab' : null, 'done' : false, 'time' : 0 },
+            'aud': {'trigram' : 'aud', 'name': 'Aurélie', 'present' : getBoolFromStorage('aud'), 'tab' : null, 'done' : false, 'time' : 0 },
             'dmz': {'trigram' : 'dmz', 'name': 'David', 'present' : getBoolFromStorage('dmz'), 'tab' : null, 'done' : false, 'time' : 0 },
-            'nal': {'trigram' : 'nal', 'name': 'Nicolas (A)', 'present' : getBoolFromStorage('nal'), 'tab' : null, 'done' : false, 'time' : 0 },
-            'ngt': {'trigram' : 'ngt', 'name': 'Nicolas (G)', 'present' : getBoolFromStorage('ngt'), 'tab' : null, 'done' : false, 'time' : 0 },
+            'jep': {'trigram' : 'jep', 'name': 'Jérôme', 'present' : getBoolFromStorage('jep'), 'tab' : null, 'done' : false, 'time' : 0 },
+            'mta': {'trigram' : 'mta', 'name': 'Messipsa', 'present' : getBoolFromStorage('mta'), 'tab' : null, 'done' : false, 'time' : 0 },
+            //'nal': {'trigram' : 'nal', 'name': 'Nicolas (A)', 'present' : getBoolFromStorage('nal'), 'tab' : null, 'done' : false, 'time' : 0 },
+            'ngt': {'trigram' : 'ngt', 'name': 'Nicolas', 'present' : getBoolFromStorage('ngt'), 'tab' : null, 'done' : false, 'time' : 0 },
             'ohx': {'trigram' : 'ohx', 'name': 'Oren', 'present' : getBoolFromStorage('ohx'), 'tab' : null, 'done' : false, 'time' : 0 },
             'odc': {'trigram' : 'odc', 'name': 'Olivier', 'present' : getBoolFromStorage('odc'), 'tab' : null, 'done' : false, 'time' : 0 },
+            'tdu': {'trigram' : 'tdu', 'name': 'Tu', 'present' : getBoolFromStorage('tdu'), 'tab' : null, 'done' : false, 'time' : 0 },
             'thm': {'trigram' : 'thm', 'name': 'Thibaut', 'present' : getBoolFromStorage('thm'), 'tab' : null, 'done' : false, 'time' : 0 },
             'tsn': {'trigram' : 'tsn', 'name': 'Tania', 'present' : getBoolFromStorage('tsn'), 'tab' : null, 'done' : false, 'time' : 0 },
-            'aud': {'trigram' : 'aud', 'name': 'Aurélie', 'present' : getBoolFromStorage('aud'), 'tab' : null, 'done' : false, 'time' : 0 }
         }
         
     }
@@ -39,10 +23,7 @@ const teams = [
 
 function getBoolFromStorage(key) {
     var it = localStorage.getItem(key);
-    if (it === null){
-        return true;
-    }
-    return localStorage.getItem(key) === 'true';
+    return it === null || it === 'true';
 }
 
 function setBoolToStorage(key, value) {
@@ -74,9 +55,6 @@ const getDevList = () => {
     const res = [...items].reduce((prev, cur, i, arr) => {
         const input = cur.querySelector('.name-label');
         prev.push(input.getAttribute('for'));
-        // if (input.checked){
-        //     prev.push(input.value);
-        // }
         return prev;
     }, []);
     return res;
@@ -90,13 +68,12 @@ const getDevList = () => {
         Object.entries(devs).forEach(([trigram, e]) => { 
             const li = document.createElement('li');
             li.setAttribute('data-user-id', e.trello);            
-            const div = document.createElement('div');
-            div.classList.add('label');
-            div.setAttribute('id', trigram);
+
             const label = document.createElement('label');
             label.classList.add('name-label');
             label.setAttribute('for', trigram);
             label.textContent = e.name;
+            
             const chk = document.createElement('input');
             chk.setAttribute('value', trigram);
             chk.setAttribute('id', trigram);
@@ -104,13 +81,11 @@ const getDevList = () => {
             chk.checked = getBoolFromStorage(trigram);   
             chk.addEventListener('change', chkChangeHandler)
             
-            li.append(div);
-            div.append(label);
+            li.append(label);
             li.append(chk);
             ul.append(li);
-            if (!chk.checked){
+            if (!chk.checked)
                 li.classList.add('off');
-            }
             currentTeam[trigram].tab = li;
         });
     });    
@@ -339,12 +314,16 @@ const redrawAll = (devList, deltaStartAngle = 0) => {
 
 //#region Dev utilities
 let colorIndex = 0;
-const fonts = ['ancient', 'romantice', 'magic-retro', 'xantegrode-signature', 'typewriter']
+const fonts = ['poppins', 'baloo 2', 'fredoka', 'lobster', 'pacifico', 'bangers', 'concert one', 'chewy', 'shadows into light', 'caveat']
 const colors = ['green', 'yellow', 'orange', 'red', 'pink', 'blue', 'white'];
 const setDevAsCurrent = dev => {
     const txtDevCurrent = document.getElementById('txtDevCurrent');
     explodeParticles(dev.tab, 'white');
-    txtDevCurrent.textContent = `${getDevName(dev.trigram)}`;
+    let devName = dev.name;
+    if (dev.trigram !== dev.name){
+        devName += ` (${dev.trigram})`;
+    }
+    txtDevCurrent.textContent = devName;
     currentTeam[dev.trigram].done = true;
     selectedDev = dev;
     startDevTimer(dev.trigram);
@@ -496,7 +475,7 @@ function rewardUser() {
     let leastSpeakingDev = null;
     let leastSpeakingTime = Number.MAX_VALUE;
     Object.entries(currentTeam).forEach(([trigram, dev]) => {
-        if (dev.time < leastSpeakingTime){
+        if (dev.time < leastSpeakingTime && dev.present){
             leastSpeakingTime = dev.time;
             leastSpeakingDev = dev;
         }
@@ -533,8 +512,12 @@ function updateCurrentDev(dev) {
     const font = fonts[fontIndex];
 
     clearSelectedDevs();
-    txtDevCurrent.setAttribute('data-font', font);
-    txtDevCurrent.textContent = dev.trigram;
+    txtDevCurrent.setAttribute('style', 'font-family: ' + font);
+    let devName = dev.name;
+    if (dev.trigram !== dev.name){
+        devName += ` (${dev.trigram})`;
+    }
+    txtDevCurrent.textContent = devName;
     dev.tab.classList.add('selected');
 }
 
